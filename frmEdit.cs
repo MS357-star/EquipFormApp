@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace EquipFormApp
 {
-    public partial class frmSub : Form
+    public partial class frmEdit : Form
     {
-        public frmSub()
+        public frmEdit()
         {
             InitializeComponent();
         }

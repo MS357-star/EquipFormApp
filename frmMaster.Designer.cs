@@ -28,105 +28,129 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dataGridView1 = new DataGridView();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            button1 = new Button();
-            button2 = new Button();
-            button3 = new Button();
-            button4 = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            dgvCategory = new DataGridView();
+            txtCateCode = new TextBox();
+            txtCateName = new TextBox();
+            btnInsert = new Button();
+            btnUpdate = new Button();
+            btnDelete = new Button();
+            btnClose = new Button();
+            lblCateCode = new Label();
+            lblCateName = new Label();
+            ((System.ComponentModel.ISupportInitialize)dgvCategory).BeginInit();
             SuspendLayout();
             // 
-            // dataGridView1
+            // dgvCategory
             // 
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(78, 31);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.ReadOnly = true;
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(420, 248);
-            dataGridView1.TabIndex = 0;
+            dgvCategory.AllowUserToAddRows = false;
+            dgvCategory.AllowUserToDeleteRows = false;
+            dgvCategory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvCategory.Location = new Point(78, 31);
+            dgvCategory.Name = "dgvCategory";
+            dgvCategory.ReadOnly = true;
+            dgvCategory.RowHeadersWidth = 51;
+            dgvCategory.Size = new Size(420, 248);
+            dgvCategory.TabIndex = 0;
             // 
-            // textBox1
+            // txtCateCode
             // 
-            textBox1.Location = new Point(556, 97);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(125, 27);
-            textBox1.TabIndex = 1;
+            txtCateCode.Location = new Point(556, 97);
+            txtCateCode.Name = "txtCateCode";
+            txtCateCode.Size = new Size(125, 27);
+            txtCateCode.TabIndex = 1;
             // 
-            // textBox2
+            // txtCateName
             // 
-            textBox2.Location = new Point(555, 166);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(125, 27);
-            textBox2.TabIndex = 2;
+            txtCateName.Location = new Point(556, 178);
+            txtCateName.Name = "txtCateName";
+            txtCateName.Size = new Size(125, 27);
+            txtCateName.TabIndex = 2;
             // 
-            // button1
+            // btnInsert
             // 
-            button1.Location = new Point(103, 316);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 59);
-            button1.TabIndex = 3;
-            button1.Text = "追加";
-            button1.UseVisualStyleBackColor = true;
+            btnInsert.Location = new Point(103, 316);
+            btnInsert.Name = "btnInsert";
+            btnInsert.Size = new Size(94, 59);
+            btnInsert.TabIndex = 3;
+            btnInsert.Text = "追加";
+            btnInsert.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnUpdate
             // 
-            button2.Location = new Point(255, 316);
-            button2.Name = "button2";
-            button2.Size = new Size(94, 59);
-            button2.TabIndex = 4;
-            button2.Text = "button2";
-            button2.UseVisualStyleBackColor = true;
+            btnUpdate.Location = new Point(255, 316);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(94, 59);
+            btnUpdate.TabIndex = 4;
+            btnUpdate.Text = "更新";
+            btnUpdate.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnDelete
             // 
-            button3.Location = new Point(404, 316);
-            button3.Name = "button3";
-            button3.Size = new Size(94, 59);
-            button3.TabIndex = 5;
-            button3.Text = "button3";
-            button3.UseVisualStyleBackColor = true;
+            btnDelete.Location = new Point(404, 316);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(94, 59);
+            btnDelete.TabIndex = 5;
+            btnDelete.Text = "削除";
+            btnDelete.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // btnClose
             // 
-            button4.Location = new Point(556, 316);
-            button4.Name = "button4";
-            button4.Size = new Size(94, 59);
-            button4.TabIndex = 6;
-            button4.Text = "button4";
-            button4.UseVisualStyleBackColor = true;
+            btnClose.Location = new Point(556, 316);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(94, 59);
+            btnClose.TabIndex = 6;
+            btnClose.Text = "閉じる";
+            btnClose.UseVisualStyleBackColor = true;
+            // 
+            // lblCateCode
+            // 
+            lblCateCode.AutoSize = true;
+            lblCateCode.Location = new Point(559, 56);
+            lblCateCode.Name = "lblCateCode";
+            lblCateCode.Size = new Size(83, 20);
+            lblCateCode.TabIndex = 7;
+            lblCateCode.Text = "カテゴリコード";
+            // 
+            // lblCateName
+            // 
+            lblCateName.AutoSize = true;
+            lblCateName.Location = new Point(558, 152);
+            lblCateName.Name = "lblCateName";
+            lblCateName.Size = new Size(67, 20);
+            lblCateName.TabIndex = 8;
+            lblCateName.Text = "カテゴリ名";
             // 
             // frmMaster
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(button4);
-            Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(button1);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
-            Controls.Add(dataGridView1);
+            Controls.Add(lblCateName);
+            Controls.Add(lblCateCode);
+            Controls.Add(btnClose);
+            Controls.Add(btnDelete);
+            Controls.Add(btnUpdate);
+            Controls.Add(btnInsert);
+            Controls.Add(txtCateName);
+            Controls.Add(txtCateCode);
+            Controls.Add(dgvCategory);
             Name = "frmMaster";
-            Text = "Form3";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            Text = "カテゴリマスタ管理画面";
+            ((System.ComponentModel.ISupportInitialize)dgvCategory).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private DataGridView dataGridView1;
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private Button button1;
-        private Button button2;
-        private Button button3;
-        private Button button4;
+        private DataGridView dgvCategory;
+        private TextBox txtCateCode;
+        private TextBox txtCateName;
+        private Button btnInsert;
+        private Button btnUpdate;
+        private Button btnDelete;
+        private Button btnClose;
+        private Label lblCateCode;
+        private Label lblCateName;
     }
 }

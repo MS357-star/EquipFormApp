@@ -28,82 +28,106 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dataGridView1 = new DataGridView();
-            textBox1 = new TextBox();
-            comboBox1 = new ComboBox();
-            button1 = new Button();
+            dgvStock = new DataGridView();
+            txtAdjuSum = new TextBox();
+            cmbAdjuUnder = new ComboBox();
+            btnEnter = new Button();
             button2 = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            lblAdjuSum = new Label();
+            lblAdjuUnder = new Label();
+            ((System.ComponentModel.ISupportInitialize)dgvStock).BeginInit();
             SuspendLayout();
             // 
-            // dataGridView1
+            // dgvStock
             // 
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(12, 12);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.ReadOnly = true;
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(402, 270);
-            dataGridView1.TabIndex = 0;
+            dgvStock.AllowUserToAddRows = false;
+            dgvStock.AllowUserToDeleteRows = false;
+            dgvStock.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvStock.Location = new Point(12, 12);
+            dgvStock.Name = "dgvStock";
+            dgvStock.ReadOnly = true;
+            dgvStock.RowHeadersWidth = 51;
+            dgvStock.Size = new Size(402, 270);
+            dgvStock.TabIndex = 0;
             // 
-            // textBox1
+            // txtAdjuSum
             // 
-            textBox1.Location = new Point(445, 127);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(125, 27);
-            textBox1.TabIndex = 1;
+            txtAdjuSum.Location = new Point(447, 113);
+            txtAdjuSum.Name = "txtAdjuSum";
+            txtAdjuSum.Size = new Size(125, 27);
+            txtAdjuSum.TabIndex = 1;
             // 
-            // comboBox1
+            // cmbAdjuUnder
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(445, 192);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(151, 28);
-            comboBox1.TabIndex = 2;
+            cmbAdjuUnder.FormattingEnabled = true;
+            cmbAdjuUnder.Location = new Point(447, 216);
+            cmbAdjuUnder.Name = "cmbAdjuUnder";
+            cmbAdjuUnder.Size = new Size(151, 28);
+            cmbAdjuUnder.TabIndex = 2;
             // 
-            // button1
+            // btnEnter
             // 
-            button1.Location = new Point(127, 321);
-            button1.Name = "button1";
-            button1.Size = new Size(138, 65);
-            button1.TabIndex = 3;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            btnEnter.Location = new Point(112, 321);
+            btnEnter.Name = "btnEnter";
+            btnEnter.Size = new Size(138, 65);
+            btnEnter.TabIndex = 3;
+            btnEnter.Text = "確定";
+            btnEnter.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
-            button2.Location = new Point(403, 321);
+            button2.Location = new Point(378, 321);
             button2.Name = "button2";
             button2.Size = new Size(138, 65);
             button2.TabIndex = 4;
-            button2.Text = "button2";
+            button2.Text = "閉じる";
             button2.UseVisualStyleBackColor = true;
+            // 
+            // lblAdjuSum
+            // 
+            lblAdjuSum.AutoSize = true;
+            lblAdjuSum.Location = new Point(447, 90);
+            lblAdjuSum.Name = "lblAdjuSum";
+            lblAdjuSum.Size = new Size(54, 20);
+            lblAdjuSum.TabIndex = 5;
+            lblAdjuSum.Text = "調整数";
+            // 
+            // lblAdjuUnder
+            // 
+            lblAdjuUnder.AutoSize = true;
+            lblAdjuUnder.Location = new Point(447, 193);
+            lblAdjuUnder.Name = "lblAdjuUnder";
+            lblAdjuUnder.Size = new Size(69, 20);
+            lblAdjuUnder.TabIndex = 6;
+            lblAdjuUnder.Text = "調整理由";
             // 
             // Adju
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(619, 416);
+            Controls.Add(lblAdjuUnder);
+            Controls.Add(lblAdjuSum);
             Controls.Add(button2);
-            Controls.Add(button1);
-            Controls.Add(comboBox1);
-            Controls.Add(textBox1);
-            Controls.Add(dataGridView1);
+            Controls.Add(btnEnter);
+            Controls.Add(cmbAdjuUnder);
+            Controls.Add(txtAdjuSum);
+            Controls.Add(dgvStock);
             Name = "Adju";
-            Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            Text = "在庫調整画面";
+            ((System.ComponentModel.ISupportInitialize)dgvStock).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private DataGridView dataGridView1;
-        private TextBox textBox1;
-        private ComboBox comboBox1;
-        private Button button1;
+        private DataGridView dgvStock;
+        private TextBox txtAdjuSum;
+        private ComboBox cmbAdjuUnder;
+        private Button btnEnter;
         private Button button2;
+        private Label lblAdjuSum;
+        private Label lblAdjuUnder;
     }
 }
