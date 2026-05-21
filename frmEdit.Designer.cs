@@ -46,28 +46,28 @@
             // 
             // txtEquipId
             // 
-            txtEquipId.Location = new Point(188, 79);
+            txtEquipId.Location = new Point(132, 83);
             txtEquipId.Name = "txtEquipId";
             txtEquipId.Size = new Size(125, 27);
             txtEquipId.TabIndex = 0;
             // 
             // txtEquipName
             // 
-            txtEquipName.Location = new Point(188, 112);
+            txtEquipName.Location = new Point(132, 116);
             txtEquipName.Name = "txtEquipName";
             txtEquipName.Size = new Size(125, 27);
             txtEquipName.TabIndex = 1;
             // 
             // txtEquipSum
             // 
-            txtEquipSum.Location = new Point(188, 145);
+            txtEquipSum.Location = new Point(132, 149);
             txtEquipSum.Name = "txtEquipSum";
             txtEquipSum.Size = new Size(125, 27);
             txtEquipSum.TabIndex = 2;
             // 
             // txtEquipFrom
             // 
-            txtEquipFrom.Location = new Point(188, 185);
+            txtEquipFrom.Location = new Point(132, 189);
             txtEquipFrom.Name = "txtEquipFrom";
             txtEquipFrom.Size = new Size(125, 27);
             txtEquipFrom.TabIndex = 3;
@@ -75,23 +75,23 @@
             // cmbCategory
             // 
             cmbCategory.FormattingEnabled = true;
-            cmbCategory.Location = new Point(188, 30);
+            cmbCategory.Location = new Point(132, 34);
             cmbCategory.Name = "cmbCategory";
             cmbCategory.Size = new Size(151, 28);
             cmbCategory.TabIndex = 4;
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(76, 307);
+            btnSave.Location = new Point(45, 307);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(134, 67);
             btnSave.TabIndex = 5;
-            btnSave.Text = "確定";
+            btnSave.Text = "保存";
             btnSave.UseVisualStyleBackColor = true;
             // 
             // btnClose
             // 
-            btnClose.Location = new Point(345, 307);
+            btnClose.Location = new Point(256, 307);
             btnClose.Name = "btnClose";
             btnClose.RightToLeft = RightToLeft.No;
             btnClose.Size = new Size(136, 67);
@@ -101,7 +101,7 @@
             // 
             // txtRem
             // 
-            txtRem.Location = new Point(188, 218);
+            txtRem.Location = new Point(132, 222);
             txtRem.Multiline = true;
             txtRem.Name = "txtRem";
             txtRem.Size = new Size(240, 53);
@@ -110,7 +110,7 @@
             // lblEquipID
             // 
             lblEquipID.AutoSize = true;
-            lblEquipID.Location = new Point(116, 81);
+            lblEquipID.Location = new Point(72, 90);
             lblEquipID.Name = "lblEquipID";
             lblEquipID.Size = new Size(54, 20);
             lblEquipID.TabIndex = 8;
@@ -119,7 +119,7 @@
             // lblEquipName
             // 
             lblEquipName.AutoSize = true;
-            lblEquipName.Location = new Point(116, 119);
+            lblEquipName.Location = new Point(72, 123);
             lblEquipName.Name = "lblEquipName";
             lblEquipName.Size = new Size(54, 20);
             lblEquipName.TabIndex = 9;
@@ -128,7 +128,7 @@
             // lblCategory
             // 
             lblCategory.AutoSize = true;
-            lblCategory.Location = new Point(119, 38);
+            lblCategory.Location = new Point(74, 42);
             lblCategory.Name = "lblCategory";
             lblCategory.Size = new Size(52, 20);
             lblCategory.TabIndex = 10;
@@ -137,7 +137,7 @@
             // lblEquipSum
             // 
             lblEquipSum.AutoSize = true;
-            lblEquipSum.Location = new Point(112, 152);
+            lblEquipSum.Location = new Point(72, 156);
             lblEquipSum.Name = "lblEquipSum";
             lblEquipSum.Size = new Size(54, 20);
             lblEquipSum.TabIndex = 11;
@@ -146,7 +146,7 @@
             // lblEquipFrom
             // 
             lblEquipFrom.AutoSize = true;
-            lblEquipFrom.Location = new Point(116, 192);
+            lblEquipFrom.Location = new Point(57, 196);
             lblEquipFrom.Name = "lblEquipFrom";
             lblEquipFrom.Size = new Size(69, 20);
             lblEquipFrom.TabIndex = 12;
@@ -155,17 +155,17 @@
             // lblRem
             // 
             lblRem.AutoSize = true;
-            lblRem.Location = new Point(112, 242);
+            lblRem.Location = new Point(87, 255);
             lblRem.Name = "lblRem";
             lblRem.Size = new Size(39, 20);
             lblRem.TabIndex = 13;
             lblRem.Text = "備考";
             // 
-            // frmSub
+            // frmEdit
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(540, 406);
+            ClientSize = new Size(427, 406);
             Controls.Add(lblRem);
             Controls.Add(lblEquipFrom);
             Controls.Add(lblEquipSum);
@@ -180,7 +180,7 @@
             Controls.Add(txtEquipSum);
             Controls.Add(txtEquipName);
             Controls.Add(txtEquipId);
-            Name = "frmSub";
+            Name = "frmEdit";
             Text = "備品登録・編集画面";
             ResumeLayout(false);
             PerformLayout();

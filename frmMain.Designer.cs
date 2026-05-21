@@ -43,7 +43,7 @@
             // 
             // btnInsert
             // 
-            btnInsert.Location = new Point(27, 368);
+            btnInsert.Location = new Point(18, 403);
             btnInsert.Name = "btnInsert";
             btnInsert.Size = new Size(169, 89);
             btnInsert.TabIndex = 7;
@@ -52,7 +52,7 @@
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(396, 54);
+            btnSearch.Location = new Point(635, 41);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(125, 48);
             btnSearch.TabIndex = 6;
@@ -62,14 +62,14 @@
             // cmbCategory
             // 
             cmbCategory.FormattingEnabled = true;
-            cmbCategory.Location = new Point(130, 54);
+            cmbCategory.Location = new Point(457, 23);
             cmbCategory.Name = "cmbCategory";
             cmbCategory.Size = new Size(151, 28);
             cmbCategory.TabIndex = 5;
             // 
             // txtEquip
             // 
-            txtEquip.Location = new Point(130, 99);
+            txtEquip.Location = new Point(457, 62);
             txtEquip.Name = "txtEquip";
             txtEquip.Size = new Size(125, 27);
             txtEquip.TabIndex = 4;
@@ -77,7 +77,7 @@
             // lblCategory
             // 
             lblCategory.AutoSize = true;
-            lblCategory.Location = new Point(27, 51);
+            lblCategory.Location = new Point(356, 31);
             lblCategory.Name = "lblCategory";
             lblCategory.Size = new Size(52, 20);
             lblCategory.TabIndex = 8;
@@ -86,7 +86,7 @@
             // lblEquipName
             // 
             lblEquipName.AutoSize = true;
-            lblEquipName.Location = new Point(29, 102);
+            lblEquipName.Location = new Point(356, 69);
             lblEquipName.Name = "lblEquipName";
             lblEquipName.Size = new Size(54, 20);
             lblEquipName.TabIndex = 9;
@@ -97,16 +97,16 @@
             dgvEquipCate.AllowUserToAddRows = false;
             dgvEquipCate.AllowUserToDeleteRows = false;
             dgvEquipCate.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEquipCate.Location = new Point(167, 147);
+            dgvEquipCate.Location = new Point(10, 115);
             dgvEquipCate.Name = "dgvEquipCate";
             dgvEquipCate.ReadOnly = true;
             dgvEquipCate.RowHeadersWidth = 51;
-            dgvEquipCate.Size = new Size(300, 188);
+            dgvEquipCate.Size = new Size(750, 260);
             dgvEquipCate.TabIndex = 10;
             // 
             // btnEdit
             // 
-            btnEdit.Location = new Point(221, 368);
+            btnEdit.Location = new Point(212, 403);
             btnEdit.Name = "btnEdit";
             btnEdit.Size = new Size(169, 89);
             btnEdit.TabIndex = 11;
@@ -115,7 +115,7 @@
             // 
             // btnAdju
             // 
-            btnAdju.Location = new Point(408, 368);
+            btnAdju.Location = new Point(399, 403);
             btnAdju.Name = "btnAdju";
             btnAdju.Size = new Size(169, 89);
             btnAdju.TabIndex = 12;
@@ -124,7 +124,7 @@
             // 
             // btnMaster
             // 
-            btnMaster.Location = new Point(593, 368);
+            btnMaster.Location = new Point(584, 403);
             btnMaster.Name = "btnMaster";
             btnMaster.Size = new Size(169, 89);
             btnMaster.TabIndex = 13;
@@ -135,7 +135,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(774, 491);
+            ClientSize = new Size(774, 517);
             Controls.Add(btnMaster);
             Controls.Add(btnAdju);
             Controls.Add(btnEdit);
