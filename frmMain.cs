@@ -31,11 +31,13 @@ namespace EquipFormApp
                     c.CategoryName  AS [カテゴリ名],
                     e.Quantity      AS [在庫数],
                     e.Location      AS [保管場所],
-                    e.Note          AS [備考]
+                    e.Note          AS [備考],
+                    e.UpdatedAt     AS [最終更新日時]
                 FROM 
                     M_Equipment e
                 INNER JOIN 
-                    M_Category c ON e.CategoryCode = c.CategoryCode";
+                    M_Category c ON e.CategoryCode = c.CategoryCode
+                WHERE 1 = 1";
 
             // DBに接続してデータを取得
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -104,14 +106,10 @@ namespace EquipFormApp
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            // 1. 画面の入力値（検索条件）を取得する
-            // コンボボックスの ValueMember（CategoryCode）を取得
             string selectedCategory = cmbCategory.SelectedValue?.ToString();
 
-            // テキストボックスの文字を取得（前後の余計な空白を消す）
             string searchName = txtEquip.Text.Trim();
 
-            // 2. ベースとなるSQL文（全件表示の形）
             string sql = @"
                 SELECT 
                     e.EquipmentId   AS [備品ID],
@@ -119,34 +117,30 @@ namespace EquipFormApp
                     c.CategoryName  AS [カテゴリ名],
                     e.Quantity      AS [在庫数],
                     e.Location      AS [保管場所],
-                    e.Note          AS [備考]
+                    e.Note          AS [備考],
+                    e.UpdatedAt     AS [最終更新日時] -- ★ここを足しました！
                 FROM 
                     M_Equipment e
                 INNER JOIN 
                     M_Category c ON e.CategoryCode = c.CategoryCode
-                WHERE 1 = 1"; // 条件を後ろに繋げやすくするためのテクニック
+                WHERE 1 = 1";
 
-            // 3. 条件に応じてSQL文を後ろに付け足していく
-            // カテゴリが「（すべて）」の時は選択値が空文字になるよう仕込んであるので、空じゃない時だけ絞り込む
             if (!string.IsNullOrEmpty(selectedCategory))
             {
                 sql += " AND e.CategoryCode = @CategoryCode";
             }
 
-            // 備品名が入力されている時だけ、部分一致（LIKE）の条件を追加
             if (!string.IsNullOrEmpty(searchName))
             {
                 sql += " AND e.EquipmentName LIKE @EquipmentName";
             }
 
-            // 4. データベースに接続して実行
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
-                        // 5. パラメータの値をセットする（SQLインジェクションという脆弱性を防ぐ安全な書き方）
                         if (!string.IsNullOrEmpty(selectedCategory))
                         {
                             cmd.Parameters.AddWithValue("@CategoryCode", selectedCategory);
@@ -154,7 +148,6 @@ namespace EquipFormApp
 
                         if (!string.IsNullOrEmpty(searchName))
                         {
-                            // 入力された文字の前後に % をくっつけて「部分一致」にする
                             cmd.Parameters.AddWithValue("@EquipmentName", "%" + searchName + "%");
                         }
 
@@ -163,7 +156,7 @@ namespace EquipFormApp
                             DataTable dt = new DataTable();
                             adapter.Fill(dt);
 
-                            // データグリッド（dgvEquipment）の表示を新しい結果で上書きする
+
                             dgvEquipCate.DataSource = dt;
                         }
                     }
@@ -205,10 +198,45 @@ namespace EquipFormApp
                 editForm.SelectedLocation = row.Cells["保管場所"].Value?.ToString();
                 editForm.SelectedNote = row.Cells["備考"].Value?.ToString();
 
-                // 第2画面を開く
                 editForm.ShowDialog();
             }
 
+            LoadEquipmentData();
+        }
+
+        private void btnAdju_Click(object sender, EventArgs e)
+        {
+            if (dgvEquipCate.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("在庫調整する備品を選択してください。", "エラー",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataGridViewRow row = dgvEquipCate.SelectedRows[0];
+
+            using (Adju adjuForm = new Adju())
+            {
+                adjuForm.SelectedEquipmentId = row.Cells["備品ID"].Value?.ToString();
+                adjuForm.SelectedEquipmentName = row.Cells["備品名"].Value?.ToString();
+                adjuForm.SelectedQuantity = row.Cells["在庫数"].Value?.ToString();
+
+                adjuForm.ShowDialog();
+            }
+
+            LoadEquipmentData();
+        }
+
+        private void btnMaster_Click(object sender, EventArgs e)
+        {
+            using (frmMaster masterForm = new frmMaster())
+            {
+  
+                masterForm.ShowDialog();
+            }
+
+ 
+            LoadCategoryCombo();
             LoadEquipmentData();
         }
     }

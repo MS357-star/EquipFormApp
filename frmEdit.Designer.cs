@@ -88,6 +88,7 @@
             btnSave.TabIndex = 5;
             btnSave.Text = "保存";
             btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
             // 
             // btnClose
             // 
@@ -98,6 +99,7 @@
             btnClose.TabIndex = 6;
             btnClose.Text = "閉じる";
             btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
             // 
             // txtRem
             // 
@@ -182,6 +184,7 @@
             Controls.Add(txtEquipId);
             Name = "frmEdit";
             Text = "備品登録・編集画面";
+            Load += frmEdit_Load;
             ResumeLayout(false);
             PerformLayout();
         }

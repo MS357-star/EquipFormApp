@@ -49,15 +49,17 @@
             btnInsert.TabIndex = 7;
             btnInsert.Text = "新規登録";
             btnInsert.UseVisualStyleBackColor = true;
+            btnInsert.Click += btnInsert_Click;
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(635, 41);
+            btnSearch.Location = new Point(637, 41);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(125, 48);
             btnSearch.TabIndex = 6;
             btnSearch.Text = "検索";
             btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Click += btnSearch_Click;
             // 
             // cmbCategory
             // 
@@ -112,6 +114,7 @@
             btnEdit.TabIndex = 11;
             btnEdit.Text = "編集";
             btnEdit.UseVisualStyleBackColor = true;
+            btnEdit.Click += btnEdit_Click;
             // 
             // btnAdju
             // 
@@ -121,6 +124,7 @@
             btnAdju.TabIndex = 12;
             btnAdju.Text = "在庫調整";
             btnAdju.UseVisualStyleBackColor = true;
+            btnAdju.Click += btnAdju_Click;
             // 
             // btnMaster
             // 
@@ -130,6 +134,7 @@
             btnMaster.TabIndex = 13;
             btnMaster.Text = "カテゴリマスタ管理";
             btnMaster.UseVisualStyleBackColor = true;
+            btnMaster.Click += btnMaster_Click;
             // 
             // frmMain
             // 
@@ -148,6 +153,7 @@
             Controls.Add(txtEquip);
             Name = "frmMain";
             Text = "備品一覧画面";
+            Load += frmMain_Load;
             ((System.ComponentModel.ISupportInitialize)dgvEquipCate).EndInit();
             ResumeLayout(false);
             PerformLayout();

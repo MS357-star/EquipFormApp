@@ -73,6 +73,7 @@
             btnEnter.TabIndex = 3;
             btnEnter.Text = "確定";
             btnEnter.UseVisualStyleBackColor = true;
+            btnEnter.Click += btnEnter_Click;
             // 
             // button2
             // 
@@ -82,6 +83,7 @@
             button2.TabIndex = 4;
             button2.Text = "閉じる";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += btnClose_Click;
             // 
             // lblAdjuSum
             // 
@@ -115,6 +117,7 @@
             Controls.Add(dgvStock);
             Name = "Adju";
             Text = "在庫調整画面";
+            Load += Adju_Load;
             ((System.ComponentModel.ISupportInitialize)dgvStock).EndInit();
             ResumeLayout(false);
             PerformLayout();
