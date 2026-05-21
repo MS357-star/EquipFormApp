@@ -103,7 +103,7 @@
             dgvEquipCate.Name = "dgvEquipCate";
             dgvEquipCate.ReadOnly = true;
             dgvEquipCate.RowHeadersWidth = 51;
-            dgvEquipCate.Size = new Size(750, 260);
+            dgvEquipCate.Size = new Size(1087, 260);
             dgvEquipCate.TabIndex = 10;
             // 
             // btnEdit
@@ -140,7 +140,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(774, 517);
+            ClientSize = new Size(1109, 517);
             Controls.Add(btnMaster);
             Controls.Add(btnAdju);
             Controls.Add(btnEdit);
