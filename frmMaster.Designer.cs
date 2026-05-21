@@ -89,6 +89,7 @@
             btnUpdate.TabIndex = 4;
             btnUpdate.Text = "更新";
             btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.Click += btnUpdate_Click;
             // 
             // btnDelete
             // 
@@ -98,6 +99,7 @@
             btnDelete.TabIndex = 5;
             btnDelete.Text = "削除";
             btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // btnClose
             // 

@@ -23,11 +23,66 @@ namespace EquipFormApp
             InitializeComponent();
         }
 
+        // 3桁の数字かどうか
         bool IsThreeDigit(string v)
         {
             return v != null && v.Length == 3 && v.All(char.IsDigit);
         }
 
+        // カテゴリコードの重複チェック
+        private bool IsDuplicateCode(string code)
+        {
+            string esc(string v) => v?.Replace("'", "''") ?? "";
+
+            string sql = $"SELECT COUNT(*) FROM M_Category WHERE CategoryCode = '{esc(code)}'";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0;   // 1件以上あれば重複
+                }
+            }
+        }
+
+        private bool IsCategoryUsed(string code)
+        {
+            string esc(string v) => v?.Replace("'", "''") ?? "";
+
+            string sql = $"SELECT COUNT(*) FROM M_Equipment WHERE CategoryCode = '{esc(code)}'";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0; // 1件でも使われていれば true
+                }
+            }
+        }
+
+
+        private bool ExistsCode(string code)
+        {
+            string esc(string v) => v?.Replace("'", "''") ?? "";
+
+            string sql = $"SELECT COUNT(*) FROM M_Category WHERE CategoryCode = '{esc(code)}'";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(sql, connection))
+                {
+                    int count = (int)command.ExecuteScalar();
+                    return count > 0;
+                }
+            }
+        }
+
+        // 入力チェック
         private bool IsInvalid(TextBox tb, string msg)
         {
             if (tb.Text.Trim() == String.Empty)
@@ -120,6 +175,13 @@ namespace EquipFormApp
                 return;
             }
 
+            // 重複チェック
+            if (IsDuplicateCode(txtCateCode.Text))
+            {
+                MessageBox.Show("このカテゴリコードは既に登録されています。");
+                return;
+            }
+
             string sql = $@"INSERT INTO M_Category (CategoryCode, CategoryName) VALUES ('{esc(txtCateCode.Text)}', '{esc(txtCateName.Text)}')";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -136,14 +198,29 @@ namespace EquipFormApp
         // 更新処理
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+
+            string CateCode = txtCateCode.Text;
+
+            // ★ ここで存在チェック
+            if (!ExistsCode(CateCode))
+            {
+                MessageBox.Show("このカテゴリコードは登録されていません。");
+                return;
+            }
+
             if (IsInvalid(txtCateCode, "カテゴリコード")) return;
             if (IsInvalid(txtCateName, "カテゴリ名")) return;
             // 3桁チェック
-            if (!IsThreeDigit(txtCateCode.Text))
+            if (!IsThreeDigit(CateCode))
             {
                 MessageBox.Show("コードは3桁の数字で入力してください。");
                 return;
             }
+
+
+
+
+
 
             if (dgvCategory.CurrentRow == null) return;
             string code = dgvCategory.CurrentRow.Cells[1].Value.ToString();
@@ -166,12 +243,25 @@ namespace EquipFormApp
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (dgvCategory.CurrentRow == null) return;
-            string code = dgvCategory.CurrentRow.Cells[1].Value.ToString();
+
+            if (IsInvalid(txtCateCode, "カテゴリコード")) return;
+
+            if (!ExistsCode(txtCateCode.Text))
+            {
+                MessageBox.Show("このカテゴリコードは登録されていません。");
+                return;
+            }
+
+            if (IsCategoryUsed(txtCateCode.Text))
+            {
+                MessageBox.Show("このカテゴリは備品に紐づいているため削除できません。");
+                return;
+            }
 
             var result = MessageBox.Show("削除しますか？", "確認", MessageBoxButtons.YesNo);
             if (result == DialogResult.Yes)
             {
-                string sql = $"DELETE FROM M_Category WHERE CategoryCode = '{esc(code)}'";
+                string sql = $"DELETE FROM M_Category WHERE CategoryCode = '{esc(txtCateCode.Text)}'";
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {

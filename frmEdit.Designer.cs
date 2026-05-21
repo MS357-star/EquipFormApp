@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            txtEquipId = new TextBox();
             txtEquipName = new TextBox();
             txtEquipSum = new TextBox();
             txtEquipFrom = new TextBox();
@@ -42,32 +41,26 @@
             lblEquipSum = new Label();
             lblEquipFrom = new Label();
             lblRem = new Label();
+            txtEquipId = new MaskedTextBox();
             SuspendLayout();
-            // 
-            // txtEquipId
-            // 
-            txtEquipId.Location = new Point(132, 83);
-            txtEquipId.Name = "txtEquipId";
-            txtEquipId.Size = new Size(125, 27);
-            txtEquipId.TabIndex = 0;
             // 
             // txtEquipName
             // 
-            txtEquipName.Location = new Point(132, 116);
+            txtEquipName.Location = new Point(132, 115);
             txtEquipName.Name = "txtEquipName";
             txtEquipName.Size = new Size(125, 27);
             txtEquipName.TabIndex = 1;
             // 
             // txtEquipSum
             // 
-            txtEquipSum.Location = new Point(132, 149);
+            txtEquipSum.Location = new Point(132, 148);
             txtEquipSum.Name = "txtEquipSum";
             txtEquipSum.Size = new Size(125, 27);
             txtEquipSum.TabIndex = 2;
             // 
             // txtEquipFrom
             // 
-            txtEquipFrom.Location = new Point(132, 189);
+            txtEquipFrom.Location = new Point(132, 181);
             txtEquipFrom.Name = "txtEquipFrom";
             txtEquipFrom.Size = new Size(125, 27);
             txtEquipFrom.TabIndex = 3;
@@ -101,7 +94,7 @@
             // 
             // txtRem
             // 
-            txtRem.Location = new Point(132, 222);
+            txtRem.Location = new Point(132, 214);
             txtRem.Multiline = true;
             txtRem.Name = "txtRem";
             txtRem.Size = new Size(240, 53);
@@ -110,7 +103,7 @@
             // lblEquipID
             // 
             lblEquipID.AutoSize = true;
-            lblEquipID.Location = new Point(72, 90);
+            lblEquipID.Location = new Point(72, 89);
             lblEquipID.Name = "lblEquipID";
             lblEquipID.Size = new Size(54, 20);
             lblEquipID.TabIndex = 8;
@@ -119,7 +112,7 @@
             // lblEquipName
             // 
             lblEquipName.AutoSize = true;
-            lblEquipName.Location = new Point(72, 123);
+            lblEquipName.Location = new Point(72, 122);
             lblEquipName.Name = "lblEquipName";
             lblEquipName.Size = new Size(54, 20);
             lblEquipName.TabIndex = 9;
@@ -137,7 +130,7 @@
             // lblEquipSum
             // 
             lblEquipSum.AutoSize = true;
-            lblEquipSum.Location = new Point(72, 156);
+            lblEquipSum.Location = new Point(72, 155);
             lblEquipSum.Name = "lblEquipSum";
             lblEquipSum.Size = new Size(54, 20);
             lblEquipSum.TabIndex = 11;
@@ -146,7 +139,7 @@
             // lblEquipFrom
             // 
             lblEquipFrom.AutoSize = true;
-            lblEquipFrom.Location = new Point(57, 196);
+            lblEquipFrom.Location = new Point(57, 188);
             lblEquipFrom.Name = "lblEquipFrom";
             lblEquipFrom.Size = new Size(69, 20);
             lblEquipFrom.TabIndex = 12;
@@ -155,17 +148,26 @@
             // lblRem
             // 
             lblRem.AutoSize = true;
-            lblRem.Location = new Point(87, 255);
+            lblRem.Location = new Point(87, 247);
             lblRem.Name = "lblRem";
             lblRem.Size = new Size(39, 20);
             lblRem.TabIndex = 13;
             lblRem.Text = "備考";
+            // 
+            // txtEquipId
+            // 
+            txtEquipId.Location = new Point(132, 82);
+            txtEquipId.Mask = "\\E\\Q0000";
+            txtEquipId.Name = "txtEquipId";
+            txtEquipId.Size = new Size(125, 27);
+            txtEquipId.TabIndex = 14;
             // 
             // frmEdit
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(427, 406);
+            Controls.Add(txtEquipId);
             Controls.Add(lblRem);
             Controls.Add(lblEquipFrom);
             Controls.Add(lblEquipSum);
@@ -179,7 +181,6 @@
             Controls.Add(txtEquipFrom);
             Controls.Add(txtEquipSum);
             Controls.Add(txtEquipName);
-            Controls.Add(txtEquipId);
             Name = "frmEdit";
             Text = "備品登録・編集画面";
             ResumeLayout(false);
@@ -187,8 +188,6 @@
         }
 
         #endregion
-
-        private TextBox txtEquipId;
         private TextBox txtEquipName;
         private TextBox txtEquipSum;
         private TextBox txtEquipFrom;
@@ -202,5 +201,6 @@
         private Label lblEquipSum;
         private Label lblEquipFrom;
         private Label lblRem;
+        private MaskedTextBox txtEquipId;
     }
 }
