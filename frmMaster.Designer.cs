@@ -51,17 +51,22 @@
             dgvCategory.RowHeadersWidth = 51;
             dgvCategory.Size = new Size(420, 248);
             dgvCategory.TabIndex = 0;
+            dgvCategory.CellClick += dgvCategory_CellClick;
             // 
             // txtCateCode
             // 
             txtCateCode.Location = new Point(462, 83);
+            txtCateCode.MaxLength = 3;
             txtCateCode.Name = "txtCateCode";
             txtCateCode.Size = new Size(125, 27);
             txtCateCode.TabIndex = 1;
+            txtCateCode.KeyDown += txtCateCode_KeyDown;
+            txtCateCode.Leave += txtCateCode_Leave;
             // 
             // txtCateName
             // 
             txtCateName.Location = new Point(462, 164);
+            txtCateName.MaxLength = 20;
             txtCateName.Name = "txtCateName";
             txtCateName.Size = new Size(125, 27);
             txtCateName.TabIndex = 2;
@@ -74,6 +79,7 @@
             btnInsert.TabIndex = 3;
             btnInsert.Text = "追加";
             btnInsert.UseVisualStyleBackColor = true;
+            btnInsert.Click += btnInsert_Click;
             // 
             // btnUpdate
             // 
@@ -101,6 +107,7 @@
             btnClose.TabIndex = 6;
             btnClose.Text = "閉じる";
             btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
             // 
             // lblCateCode
             // 
@@ -135,7 +142,9 @@
             Controls.Add(txtCateCode);
             Controls.Add(dgvCategory);
             Name = "frmMaster";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "カテゴリマスタ管理画面";
+            Load += frmMaster_Load;
             ((System.ComponentModel.ISupportInitialize)dgvCategory).EndInit();
             ResumeLayout(false);
             PerformLayout();
