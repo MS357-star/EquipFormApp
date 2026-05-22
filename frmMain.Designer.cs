@@ -1,4 +1,4 @@
-﻿namespace EquipFormApp
+namespace EquipFormApp
 {
     partial class frmMain
     {
@@ -111,6 +111,8 @@
             dgvEquipCate.RowHeadersWidth = 51;
             dgvEquipCate.Size = new Size(1087, 269);
             dgvEquipCate.TabIndex = 10;
+            dgvEquipCate.TabStop = false;
+            dgvEquipCate.RowPostPaint += dgvEquipCate_RowPostPaint;
             // 
             // btnEdit
             // 
