@@ -54,14 +54,19 @@ namespace EquipFormApp
             txtEquipName.MaxLength = 50;
             txtEquipName.Name = "txtEquipName";
             txtEquipName.Size = new Size(125, 27);
-            txtEquipName.TabIndex = 3;
+            txtEquipName.TabIndex = 2;
+            txtEquipName.KeyDown += frmEdit_KeyDown;
             // 
             // txtEquipSum
             // 
             txtEquipSum.Location = new Point(110, 141);
+            txtEquipSum.MaxLength = 6;
             txtEquipSum.Name = "txtEquipSum";
             txtEquipSum.Size = new Size(125, 27);
-            txtEquipSum.TabIndex = 2;
+            txtEquipSum.TabIndex = 3;
+            txtEquipSum.TextAlign = HorizontalAlignment.Right;
+            txtEquipSum.TextChanged += txtEquipSum_TextChanged;
+            txtEquipSum.KeyDown += frmEdit_KeyDown;
             txtEquipSum.KeyPress += txtEquipSum_KeyPress;
             txtEquipSum.Leave += txtEquipSum_Leave;
             // 
@@ -71,7 +76,8 @@ namespace EquipFormApp
             txtEquipFrom.MaxLength = 30;
             txtEquipFrom.Name = "txtEquipFrom";
             txtEquipFrom.Size = new Size(125, 27);
-            txtEquipFrom.TabIndex = 5;
+            txtEquipFrom.TabIndex = 4;
+            txtEquipFrom.KeyDown += frmEdit_KeyDown;
             // 
             // cmbCategory
             // 
@@ -79,17 +85,19 @@ namespace EquipFormApp
             cmbCategory.Location = new Point(110, 27);
             cmbCategory.Name = "cmbCategory";
             cmbCategory.Size = new Size(151, 28);
-            cmbCategory.TabIndex = 1;
+            cmbCategory.TabIndex = 0;
+            cmbCategory.KeyDown += frmEdit_KeyDown;
             // 
             // btnSave
             // 
             btnSave.Location = new Point(38, 21);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(134, 67);
-            btnSave.TabIndex = 7;
-            btnSave.Text = "保存";
+            btnSave.TabIndex = 6;
+            btnSave.Text = "保存(F1)";
             btnSave.UseVisualStyleBackColor = true;
             btnSave.Click += btnSave_Click;
+            btnSave.KeyDown += frmEdit_KeyDown;
             // 
             // btnClose
             // 
@@ -97,10 +105,11 @@ namespace EquipFormApp
             btnClose.Name = "btnClose";
             btnClose.RightToLeft = RightToLeft.No;
             btnClose.Size = new Size(136, 67);
-            btnClose.TabIndex = 8;
-            btnClose.Text = "閉じる";
+            btnClose.TabIndex = 7;
+            btnClose.Text = "閉じる(F10)";
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
+            btnClose.KeyDown += frmEdit_KeyDown;
             // 
             // txtRem
             // 
@@ -109,12 +118,13 @@ namespace EquipFormApp
             txtRem.Multiline = true;
             txtRem.Name = "txtRem";
             txtRem.Size = new Size(240, 53);
-            txtRem.TabIndex = 6;
+            txtRem.TabIndex = 5;
+            txtRem.KeyDown += frmEdit_KeyDown;
             // 
             // lblEquipID
             // 
             lblEquipID.AutoSize = true;
-            lblEquipID.Location = new Point(50, 82);
+            lblEquipID.Location = new Point(50, 78);
             lblEquipID.Name = "lblEquipID";
             lblEquipID.Size = new Size(54, 20);
             lblEquipID.TabIndex = 8;
@@ -123,7 +133,7 @@ namespace EquipFormApp
             // lblEquipName
             // 
             lblEquipName.AutoSize = true;
-            lblEquipName.Location = new Point(50, 115);
+            lblEquipName.Location = new Point(50, 111);
             lblEquipName.Name = "lblEquipName";
             lblEquipName.Size = new Size(54, 20);
             lblEquipName.TabIndex = 9;
@@ -132,7 +142,7 @@ namespace EquipFormApp
             // lblCategory
             // 
             lblCategory.AutoSize = true;
-            lblCategory.Location = new Point(52, 35);
+            lblCategory.Location = new Point(52, 30);
             lblCategory.Name = "lblCategory";
             lblCategory.Size = new Size(52, 20);
             lblCategory.TabIndex = 10;
@@ -141,7 +151,7 @@ namespace EquipFormApp
             // lblEquipSum
             // 
             lblEquipSum.AutoSize = true;
-            lblEquipSum.Location = new Point(50, 148);
+            lblEquipSum.Location = new Point(50, 144);
             lblEquipSum.Name = "lblEquipSum";
             lblEquipSum.Size = new Size(54, 20);
             lblEquipSum.TabIndex = 11;
@@ -150,7 +160,7 @@ namespace EquipFormApp
             // lblEquipFrom
             // 
             lblEquipFrom.AutoSize = true;
-            lblEquipFrom.Location = new Point(35, 181);
+            lblEquipFrom.Location = new Point(35, 177);
             lblEquipFrom.Name = "lblEquipFrom";
             lblEquipFrom.Size = new Size(69, 20);
             lblEquipFrom.TabIndex = 12;
@@ -159,7 +169,7 @@ namespace EquipFormApp
             // lblRem
             // 
             lblRem.AutoSize = true;
-            lblRem.Location = new Point(65, 240);
+            lblRem.Location = new Point(65, 210);
             lblRem.Name = "lblRem";
             lblRem.Size = new Size(39, 20);
             lblRem.TabIndex = 13;
@@ -172,7 +182,11 @@ namespace EquipFormApp
             txtEquipId.Name = "txtEquipId";
             txtEquipId.PromptChar = ' ';
             txtEquipId.Size = new Size(125, 27);
-            txtEquipId.TabIndex = 2;
+            txtEquipId.TabIndex = 1;
+            txtEquipId.Enter += txtEquipId_Enter;
+            txtEquipId.KeyDown += txtEquipId_KeyDown;
+            txtEquipId.KeyPress += txtEquipId_KeyPress;
+            txtEquipId.Validating += txtEquipId_Validating;
             // 
             // grpTop
             // 
@@ -191,7 +205,7 @@ namespace EquipFormApp
             grpTop.Location = new Point(12, 12);
             grpTop.Name = "grpTop";
             grpTop.Size = new Size(380, 279);
-            grpTop.TabIndex = 15;
+            grpTop.TabIndex = 8;
             grpTop.TabStop = false;
             // 
             // grpBottom
@@ -201,9 +215,8 @@ namespace EquipFormApp
             grpBottom.Location = new Point(12, 297);
             grpBottom.Name = "grpBottom";
             grpBottom.Size = new Size(380, 97);
+            grpBottom.TabIndex = 9;
             grpBottom.TabStop = false;
-            txtEquipId.TabIndex = 14;
-            txtEquipId.Enter += txtEquipId_Enter;
             // 
             // frmEdit
             // 
@@ -215,7 +228,9 @@ namespace EquipFormApp
             Name = "frmEdit";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "備品登録・編集画面";
+            Activated += frmEdit_Activated;
             Load += frmEdit_Load;
+            KeyDown += frmEdit_KeyDown;
             grpTop.ResumeLayout(false);
             grpTop.PerformLayout();
             grpBottom.ResumeLayout(false);
