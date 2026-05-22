@@ -1,6 +1,6 @@
 namespace EquipFormApp
 {
-    partial class frmMaster
+    partial class Adju
     {
         /// <summary>
         /// Required designer variable.
@@ -28,196 +28,210 @@ namespace EquipFormApp
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            dgvCategory = new DataGridView();
-            txtCateCode = new TextBox();
-            txtCateName = new TextBox();
-            btnInsert = new Button();
-            btnUpdate = new Button();
-            btnDelete = new Button();
+            txtAdjuSum = new TextBox();
+            cmbAdjuUnder = new ComboBox();
+            btnEnter = new Button();
             btnClose = new Button();
-            lblCateCode = new Label();
-            lblCateName = new Label();
-            grpBottom = new GroupBox();
+            lblAdjuSum = new Label();
+            lblAdjuUnder = new Label();
             grpTop = new GroupBox();
-            ((System.ComponentModel.ISupportInitialize)dgvCategory).BeginInit();
-            grpBottom.SuspendLayout();
+            grpBottom = new GroupBox();
+            lbl1 = new Label();
+            txtEquipId = new TextBox();
+            lbl2 = new Label();
+            txtEquipName = new TextBox();
+            lbl3 = new Label();
+            txtCurrentStock = new TextBox();
+            grpinfo = new GroupBox();
             grpTop.SuspendLayout();
+            grpBottom.SuspendLayout();
+            grpinfo.SuspendLayout();
             SuspendLayout();
             // 
-            // dgvCategory
+            // txtAdjuSum
             // 
-            dgvCategory.AllowUserToAddRows = false;
-            dgvCategory.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.LightSkyBlue;
-            dataGridViewCellStyle1.Font = new Font("Yu Gothic UI", 9F);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvCategory.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dgvCategory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvCategory.EnableHeadersVisualStyles = false;
-            dgvCategory.Location = new Point(12, 12);
-            dgvCategory.Name = "dgvCategory";
-            dgvCategory.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.LightSkyBlue;
-            dataGridViewCellStyle2.Font = new Font("Yu Gothic UI", 9F);
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvCategory.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            dgvCategory.RowHeadersWidth = 51;
-            dgvCategory.Size = new Size(420, 248);
-            dgvCategory.TabIndex = 7;
-            dgvCategory.TabStop = false;
-            dgvCategory.CellClick += dgvCategory_CellClick;
-            dgvCategory.RowPostPaint += dgvCategory_RowPostPaint;
-            dgvCategory.KeyDown += btnInsert_KeyDown;
+            txtAdjuSum.Location = new Point(12, 68);
+            txtAdjuSum.MaxLength = 5;
+            txtAdjuSum.Name = "txtAdjuSum";
+            txtAdjuSum.Size = new Size(150, 27);
+            txtAdjuSum.TabIndex = 1;
+            txtAdjuSum.TextAlign = HorizontalAlignment.Right;
+            txtAdjuSum.KeyPress += txtAdjuSum_KeyPress;
+            txtAdjuSum.Leave += txtAdjuSum_Leave;
             // 
-            // txtCateCode
+            // cmbAdjuUnder
             // 
-            txtCateCode.Location = new Point(12, 78);
-            txtCateCode.MaxLength = 3;
-            txtCateCode.Name = "txtCateCode";
-            txtCateCode.Size = new Size(150, 27);
-            txtCateCode.TabIndex = 1;
-            txtCateCode.TextChanged += txtCateCode_TextChanged;
-            txtCateCode.KeyDown += txtCateCode_KeyDown;
-            txtCateCode.Leave += txtCateCode_Leave;
+            cmbAdjuUnder.FormattingEnabled = true;
+            cmbAdjuUnder.Location = new Point(181, 68);
+            cmbAdjuUnder.Name = "cmbAdjuUnder";
+            cmbAdjuUnder.Size = new Size(151, 28);
+            cmbAdjuUnder.TabIndex = 2;
             // 
-            // txtCateName
+            // btnEnter
             // 
-            txtCateName.Location = new Point(12, 159);
-            txtCateName.MaxLength = 20;
-            txtCateName.Name = "txtCateName";
-            txtCateName.Size = new Size(150, 27);
-            txtCateName.TabIndex = 2;
-            txtCateName.KeyDown += btnInsert_KeyDown;
-            // 
-            // btnInsert
-            // 
-            btnInsert.Location = new Point(18, 30);
-            btnInsert.Name = "btnInsert";
-            btnInsert.Size = new Size(113, 77);
-            btnInsert.TabIndex = 3;
-            btnInsert.Text = "追加(F1)";
-            btnInsert.UseVisualStyleBackColor = true;
-            btnInsert.Click += btnInsert_Click;
-            btnInsert.KeyDown += btnInsert_KeyDown;
-            // 
-            // btnUpdate
-            // 
-            btnUpdate.Location = new Point(168, 30);
-            btnUpdate.Name = "btnUpdate";
-            btnUpdate.Size = new Size(113, 77);
-            btnUpdate.TabIndex = 4;
-            btnUpdate.Text = "更新(F3)";
-            btnUpdate.UseVisualStyleBackColor = true;
-            btnUpdate.Click += btnUpdate_Click;
-            btnUpdate.KeyDown += btnInsert_KeyDown;
-            // 
-            // btnDelete
-            // 
-            btnDelete.Location = new Point(318, 30);
-            btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(113, 77);
-            btnDelete.TabIndex = 5;
-            btnDelete.Text = "削除(F6)";
-            btnDelete.UseVisualStyleBackColor = true;
-            btnDelete.Click += btnDelete_Click;
-            btnDelete.KeyDown += btnInsert_KeyDown;
+            btnEnter.Location = new Point(100, 36);
+            btnEnter.Name = "btnEnter";
+            btnEnter.Size = new Size(138, 65);
+            btnEnter.TabIndex = 3;
+            btnEnter.Text = "確定(F1)";
+            btnEnter.UseVisualStyleBackColor = true;
+            btnEnter.Click += btnEnter_Click;
             // 
             // btnClose
             // 
-            btnClose.Location = new Point(468, 30);
+            btnClose.Location = new Point(358, 36);
             btnClose.Name = "btnClose";
-            btnClose.Size = new Size(113, 77);
-            btnClose.TabIndex = 6;
+            btnClose.Size = new Size(138, 65);
+            btnClose.TabIndex = 4;
             btnClose.Text = "閉じる(F10)";
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
-            btnClose.KeyDown += btnInsert_KeyDown;
             // 
-            // lblCateCode
+            // lblAdjuSum
             // 
-            lblCateCode.AutoSize = true;
-            lblCateCode.Location = new Point(12, 55);
-            lblCateCode.Name = "lblCateCode";
-            lblCateCode.Size = new Size(83, 20);
-            lblCateCode.TabIndex = 7;
-            lblCateCode.Text = "カテゴリコード";
+            lblAdjuSum.AutoSize = true;
+            lblAdjuSum.Location = new Point(12, 45);
+            lblAdjuSum.Name = "lblAdjuSum";
+            lblAdjuSum.Size = new Size(54, 20);
+            lblAdjuSum.TabIndex = 5;
+            lblAdjuSum.Text = "調整数";
             // 
-            // lblCateName
+            // lblAdjuUnder
             // 
-            lblCateName.AutoSize = true;
-            lblCateName.Location = new Point(12, 136);
-            lblCateName.Name = "lblCateName";
-            lblCateName.Size = new Size(67, 20);
-            lblCateName.TabIndex = 8;
-            lblCateName.Text = "カテゴリ名";
-            // 
-            // grpBottom
-            // 
-            grpBottom.Controls.Add(btnInsert);
-            grpBottom.Controls.Add(btnUpdate);
-            grpBottom.Controls.Add(btnDelete);
-            grpBottom.Controls.Add(btnClose);
-            grpBottom.Location = new Point(12, 266);
-            grpBottom.Name = "grpBottom";
-            grpBottom.Size = new Size(597, 125);
-            grpBottom.TabIndex = 9;
-            grpBottom.TabStop = false;
+            lblAdjuUnder.AutoSize = true;
+            lblAdjuUnder.Location = new Point(181, 45);
+            lblAdjuUnder.Name = "lblAdjuUnder";
+            lblAdjuUnder.Size = new Size(69, 20);
+            lblAdjuUnder.TabIndex = 6;
+            lblAdjuUnder.Text = "調整理由";
             // 
             // grpTop
             // 
-            grpTop.Controls.Add(txtCateName);
-            grpTop.Controls.Add(txtCateCode);
-            grpTop.Controls.Add(lblCateName);
-            grpTop.Controls.Add(lblCateCode);
-            grpTop.Location = new Point(438, 3);
+            grpTop.Controls.Add(cmbAdjuUnder);
+            grpTop.Controls.Add(txtAdjuSum);
+            grpTop.Controls.Add(lblAdjuUnder);
+            grpTop.Controls.Add(lblAdjuSum);
+            grpTop.Location = new Point(270, 12);
             grpTop.Name = "grpTop";
-            grpTop.Size = new Size(171, 257);
-            grpTop.TabIndex = 10;
+            grpTop.Size = new Size(338, 155);
+            grpTop.TabIndex = 7;
             grpTop.TabStop = false;
             // 
-            // frmMaster
+            // grpBottom
+            // 
+            grpBottom.Controls.Add(btnEnter);
+            grpBottom.Controls.Add(btnClose);
+            grpBottom.Location = new Point(13, 173);
+            grpBottom.Name = "grpBottom";
+            grpBottom.Size = new Size(595, 117);
+            grpBottom.TabIndex = 8;
+            grpBottom.TabStop = false;
+            // 
+            // lbl1
+            // 
+            lbl1.AutoSize = true;
+            lbl1.Location = new Point(53, 29);
+            lbl1.Name = "lbl1";
+            lbl1.Size = new Size(54, 20);
+            lbl1.TabIndex = 9;
+            lbl1.Text = "備品ID";
+            // 
+            // txtEquipId
+            // 
+            txtEquipId.Location = new Point(113, 26);
+            txtEquipId.Name = "txtEquipId";
+            txtEquipId.ReadOnly = true;
+            txtEquipId.Size = new Size(125, 27);
+            txtEquipId.TabIndex = 10;
+            txtEquipId.TabStop = false;
+            // 
+            // lbl2
+            // 
+            lbl2.AutoSize = true;
+            lbl2.Location = new Point(53, 72);
+            lbl2.Name = "lbl2";
+            lbl2.Size = new Size(54, 20);
+            lbl2.TabIndex = 11;
+            lbl2.Text = "備品名";
+            // 
+            // txtEquipName
+            // 
+            txtEquipName.Location = new Point(113, 69);
+            txtEquipName.Name = "txtEquipName";
+            txtEquipName.ReadOnly = true;
+            txtEquipName.Size = new Size(125, 27);
+            txtEquipName.TabIndex = 12;
+            txtEquipName.TabStop = false;
+            // 
+            // lbl3
+            // 
+            lbl3.AutoSize = true;
+            lbl3.Location = new Point(11, 116);
+            lbl3.Name = "lbl3";
+            lbl3.Size = new Size(96, 20);
+            lbl3.TabIndex = 13;
+            lbl3.Text = "現在の在庫数";
+            // 
+            // txtCurrentStock
+            // 
+            txtCurrentStock.Location = new Point(113, 113);
+            txtCurrentStock.Name = "txtCurrentStock";
+            txtCurrentStock.ReadOnly = true;
+            txtCurrentStock.Size = new Size(125, 27);
+            txtCurrentStock.TabIndex = 14;
+            txtCurrentStock.TabStop = false;
+            // 
+            // grpinfo
+            // 
+            grpinfo.Controls.Add(lbl1);
+            grpinfo.Controls.Add(txtEquipId);
+            grpinfo.Controls.Add(txtEquipName);
+            grpinfo.Controls.Add(txtCurrentStock);
+            grpinfo.Controls.Add(lbl2);
+            grpinfo.Controls.Add(lbl3);
+            grpinfo.Location = new Point(13, 12);
+            grpinfo.Name = "grpinfo";
+            grpinfo.Size = new Size(251, 155);
+            grpinfo.TabIndex = 15;
+            grpinfo.TabStop = false;
+            // 
+            // Adju
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(618, 395);
-            Controls.Add(grpTop);
+            ClientSize = new Size(618, 304);
+            Controls.Add(grpinfo);
             Controls.Add(grpBottom);
-            Controls.Add(dgvCategory);
-            Name = "frmMaster";
+            Controls.Add(grpTop);
+            KeyPreview = true;
+            Name = "Adju";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "カテゴリマスタ管理画面";
-            Activated += frmMaster_Activated;
-            Load += frmMaster_Load;
-            KeyDown += btnInsert_KeyDown;
-            ((System.ComponentModel.ISupportInitialize)dgvCategory).EndInit();
-            grpBottom.ResumeLayout(false);
+            Text = "在庫調整画面";
+            Load += Adju_Load;
+            KeyDown += Adju_KeyDown;
             grpTop.ResumeLayout(false);
             grpTop.PerformLayout();
+            grpBottom.ResumeLayout(false);
+            grpinfo.ResumeLayout(false);
+            grpinfo.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private DataGridView dgvCategory;
-        private TextBox txtCateCode;
-        private TextBox txtCateName;
-        private Button btnInsert;
-        private Button btnUpdate;
-        private Button btnDelete;
+        private TextBox txtAdjuSum;
+        private ComboBox cmbAdjuUnder;
+        private Button btnEnter;
         private Button btnClose;
-        private Label lblCateCode;
-        private Label lblCateName;
-        private GroupBox grpBottom;
+        private Label lblAdjuSum;
+        private Label lblAdjuUnder;
         private GroupBox grpTop;
+        private GroupBox grpBottom;
+        private Label lbl1;
+        private TextBox txtEquipId;
+        private Label lbl2;
+        private TextBox txtEquipName;
+        private Label lbl3;
+        private TextBox txtCurrentStock;
+        private GroupBox grpinfo;
     }
 }
