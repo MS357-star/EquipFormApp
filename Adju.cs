@@ -211,6 +211,8 @@ namespace EquipFormApp
             if (e.KeyCode == Keys.F10)
             {
                 btnClose.PerformClick();
+                SendKeys.Send("Tab");
+                e.Handled = true;
             }
         }
     }
