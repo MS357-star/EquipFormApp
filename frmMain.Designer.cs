@@ -51,31 +51,31 @@ namespace EquipFormApp
             btnInsert.Name = "btnInsert";
             btnInsert.Size = new Size(169, 89);
             btnInsert.TabIndex = 1;
-            btnInsert.Text = "新規登録";
+            btnInsert.Text = "新規登録(F1)";
             btnInsert.UseVisualStyleBackColor = true;
             btnInsert.Click += btnInsert_Click;
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(946, 38);
+            btnSearch.Location = new Point(1072, 25);
             btnSearch.Name = "btnSearch";
-            btnSearch.Size = new Size(125, 48);
+            btnSearch.Size = new Size(125, 66);
             btnSearch.TabIndex = 7;
-            btnSearch.Text = "検索";
+            btnSearch.Text = "検索(F9)";
             btnSearch.UseVisualStyleBackColor = true;
             btnSearch.Click += btnSearch_Click;
             // 
             // cmbCategory
             // 
             cmbCategory.FormattingEnabled = true;
-            cmbCategory.Location = new Point(766, 20);
+            cmbCategory.Location = new Point(892, 25);
             cmbCategory.Name = "cmbCategory";
             cmbCategory.Size = new Size(151, 28);
             cmbCategory.TabIndex = 5;
             // 
             // txtEquip
             // 
-            txtEquip.Location = new Point(766, 59);
+            txtEquip.Location = new Point(892, 64);
             txtEquip.MaxLength = 50;
             txtEquip.Name = "txtEquip";
             txtEquip.Size = new Size(151, 27);
@@ -84,7 +84,7 @@ namespace EquipFormApp
             // lblCategory
             // 
             lblCategory.AutoSize = true;
-            lblCategory.Location = new Point(665, 28);
+            lblCategory.Location = new Point(791, 33);
             lblCategory.Name = "lblCategory";
             lblCategory.Size = new Size(52, 20);
             lblCategory.TabIndex = 8;
@@ -93,7 +93,7 @@ namespace EquipFormApp
             // lblEquipName
             // 
             lblEquipName.AutoSize = true;
-            lblEquipName.Location = new Point(665, 66);
+            lblEquipName.Location = new Point(791, 71);
             lblEquipName.Name = "lblEquipName";
             lblEquipName.Size = new Size(54, 20);
             lblEquipName.TabIndex = 9;
@@ -109,38 +109,38 @@ namespace EquipFormApp
             dgvEquipCate.Name = "dgvEquipCate";
             dgvEquipCate.ReadOnly = true;
             dgvEquipCate.RowHeadersWidth = 51;
-            dgvEquipCate.Size = new Size(1087, 269);
+            dgvEquipCate.Size = new Size(1205, 269);
             dgvEquipCate.TabIndex = 10;
             dgvEquipCate.TabStop = false;
-            dgvEquipCate.RowPostPaint += dgvEquipCate_RowPostPaint;
+            dgvEquipCate.RowPostPaint += dgvList_RowPostPaint;
             // 
             // btnEdit
             // 
-            btnEdit.Location = new Point(336, 26);
+            btnEdit.Location = new Point(381, 26);
             btnEdit.Name = "btnEdit";
             btnEdit.Size = new Size(169, 89);
             btnEdit.TabIndex = 2;
-            btnEdit.Text = "編集";
+            btnEdit.Text = "編集(F3)";
             btnEdit.UseVisualStyleBackColor = true;
             btnEdit.Click += btnEdit_Click;
             // 
             // btnAdju
             // 
-            btnAdju.Location = new Point(586, 26);
+            btnAdju.Location = new Point(676, 26);
             btnAdju.Name = "btnAdju";
             btnAdju.Size = new Size(169, 89);
             btnAdju.TabIndex = 3;
-            btnAdju.Text = "在庫調整";
+            btnAdju.Text = "在庫調整(F5)";
             btnAdju.UseVisualStyleBackColor = true;
             btnAdju.Click += btnAdju_Click;
             // 
             // btnMaster
             // 
-            btnMaster.Location = new Point(836, 26);
+            btnMaster.Location = new Point(971, 26);
             btnMaster.Name = "btnMaster";
             btnMaster.Size = new Size(169, 89);
             btnMaster.TabIndex = 4;
-            btnMaster.Text = "カテゴリマスタ管理";
+            btnMaster.Text = "カテゴリマスタ管理(F7)";
             btnMaster.UseVisualStyleBackColor = true;
             btnMaster.Click += btnMaster_Click;
             // 
@@ -150,9 +150,9 @@ namespace EquipFormApp
             grpBottom.Controls.Add(btnMaster);
             grpBottom.Controls.Add(btnEdit);
             grpBottom.Controls.Add(btnAdju);
-            grpBottom.Location = new Point(10, 381);
+            grpBottom.Location = new Point(10, 390);
             grpBottom.Name = "grpBottom";
-            grpBottom.Size = new Size(1087, 125);
+            grpBottom.Size = new Size(1205, 116);
             grpBottom.TabIndex = 14;
             grpBottom.TabStop = false;
             // 
@@ -165,7 +165,7 @@ namespace EquipFormApp
             grpTop.Controls.Add(lblCategory);
             grpTop.Location = new Point(12, 7);
             grpTop.Name = "grpTop";
-            grpTop.Size = new Size(1085, 97);
+            grpTop.Size = new Size(1203, 97);
             grpTop.TabIndex = 15;
             grpTop.TabStop = false;
             // 
@@ -173,14 +173,17 @@ namespace EquipFormApp
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1109, 517);
+            ClientSize = new Size(1227, 517);
             Controls.Add(grpTop);
             Controls.Add(grpBottom);
             Controls.Add(dgvEquipCate);
+            KeyPreview = true;
             Name = "frmMain";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "備品一覧画面";
+            Activated += frmMain_Activated;
             Load += frmMain_Load;
+            KeyDown += frmMain_KeyDown;
             ((System.ComponentModel.ISupportInitialize)dgvEquipCate).EndInit();
             grpBottom.ResumeLayout(false);
             grpTop.ResumeLayout(false);
