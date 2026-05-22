@@ -231,5 +231,43 @@ namespace EquipFormApp
             this.Close();
         }
 
+        //カンマ
+        private void txtEquipSum_Leave(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtEquipSum.Text))
+            {
+                string rawSum = txtEquipSum.Text.Replace(",", "");
+                if (int.TryParse(rawSum, out int m))
+                {
+                    txtEquipSum.Text = m.ToString("#,##0");
+                }
+            }
+        }
+
+        private void txtEquipSum_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // 0～9の数字以外の入力を無視する
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+
+        private void txtEquipId_Enter(object sender, EventArgs e)
+        {
+            // 非同期（BeginInvoke）を使って、フォーカス移動が完全に終わった後にカーソル位置を動かす
+            this.BeginInvoke(new Action(() => {
+                string currentText = txtEquipId.Text.Replace(" ", "").Trim();
+
+                if (currentText == "EQ")
+                {
+                    txtEquipId.SelectionStart = 2;
+                }
+                {
+                    txtEquipId.SelectionStart = txtEquipId.Text.Trim().Length; 
+                }
+            }));
+        }
     }
 }
