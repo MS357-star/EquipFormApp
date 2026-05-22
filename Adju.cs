@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,6 +25,16 @@ namespace EquipFormApp
             InitializeComponent();
         }
 
+
+        private void SetGridDesign()
+        {
+            if (dgvStock.Columns.Count == 0) return;
+            dgvStock.EnableHeadersVisualStyles = false;
+            dgvStock.ColumnHeadersDefaultCellStyle.BackColor = Color.LightSkyBlue;
+            dgvStock.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvStock.RowHeadersDefaultCellStyle.BackColor = Color.LightSkyBlue;
+        }
+
         private void Adju_Load(object sender, EventArgs e)
         {
             DataTable dt = new DataTable();
@@ -43,12 +53,11 @@ namespace EquipFormApp
             cmbAdjuUnder.Items.Clear();
             cmbAdjuUnder.Items.Add("払い出し");
             cmbAdjuUnder.Items.Add("補充");
-            cmbAdjuUnder.Items.Add("棚卸調整");
-            cmbAdjuUnder.Items.Add("紛失・破損");
 
             cmbAdjuUnder.SelectedIndex = 0;
 
             cmbAdjuUnder.DropDownStyle = ComboBoxStyle.DropDownList;
+            SetGridDesign();
         }
 
         // 「閉じる」ボタンが押された時の処理
@@ -61,78 +70,95 @@ namespace EquipFormApp
         {
             txtAdjuSum.Text = txtAdjuSum.Text.Trim();
 
-            //  必須入力チェック
+            // 必須入力チェック
             if (string.IsNullOrWhiteSpace(txtAdjuSum.Text))
             {
                 MessageBox.Show("調整数を入力してください。", "入力確認", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtAdjuSum.Focus();
-                return; 
+                return;
             }
 
-            if (!int.TryParse(txtAdjuSum.Text, out int adjustNum))
+            // 入力された文字が数字かチェック
+            if (!int.TryParse(txtAdjuSum.Text.Replace(",", ""), out int adjustNum))
             {
-                MessageBox.Show("調整数には半角数字（整数）を入力してください。\n払い出しの場合はマイナス（-）を付けて入力してください。", "入力エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("調整数には半角数字（整数）を入力してください。", "入力エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtAdjuSum.Focus();
+                return;
+            }
+            int absAdjustNum = Math.Abs(adjustNum);
+
+            int currentStock = int.Parse(SelectedQuantity.Replace(",", ""));
+            int afterStock = 0;
+
+            string mode = cmbAdjuUnder.SelectedItem?.ToString() ?? "";
+
+            if (mode == "払い出し")
+            {
+               
+                afterStock = currentStock - absAdjustNum;
+            }
+            else if (mode == "補充")
+            {
+                afterStock = currentStock + absAdjustNum;
+            }
+            else
+            {
+                MessageBox.Show("払い出し、または補充を選択してください。", "選択エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             // 在庫割れチェック
-            int currentStock = int.Parse(SelectedQuantity);
-            int afterStock = currentStock + adjustNum;
-
             if (afterStock < 0)
             {
-                MessageBox.Show($"在庫不足です。\n現在の在庫数（{currentStock}）に対して、調整数（{adjustNum}）を適用すると0未満になってしまうため、処理を中断します。", "在庫エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"在庫不足です。\n現在の在庫数（{currentStock}）に対して、払い出し数（{absAdjustNum}）が多すぎるため、処理を中断します。", "在庫エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtAdjuSum.Focus();
                 return;
             }
 
-            if (MessageBox.Show("在庫調整を確定してもよろしいですか？", "確定確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+            if (MessageBox.Show($"{mode}処理を確定してもよろしいですか？\n（調整後の在庫数：{afterStock}）", "確定確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
-                return; 
+                return;
             }
 
-            // 全てのチェックをクリアした後の処理
             try
-            { 
-            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                conn.Open();
-
-                using (SqlTransaction tx = conn.BeginTransaction())
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    try
+                    conn.Open();
+
+                    using (SqlTransaction tx = conn.BeginTransaction())
                     {
-                        string safeEquipId = SelectedEquipmentId.Replace("'", "''");
-
-                        // M_Equipmentの在庫数を更新するSQL
-                        string updateSql = $@"
-                                UPDATE M_Equipment 
-                                SET Quantity = {afterStock}, 
-                                    UpdatedAt = GETDATE() 
-                                WHERE EquipmentId = '{safeEquipId}'
-                            ";
-
-                        using (SqlCommand cmd = new SqlCommand(updateSql, conn, tx))
+                        try
                         {
-                            cmd.ExecuteNonQuery();
+                            string safeEquipId = SelectedEquipmentId.Replace("'", "''");
+
+                            // M_Equipmentの在庫数を更新するSQL
+                            string updateSql = $@"
+                        UPDATE M_Equipment 
+                        SET Quantity = {afterStock}, 
+                            UpdatedAt = GETDATE() 
+                        WHERE EquipmentId = '{safeEquipId}'
+                    ";
+
+                            using (SqlCommand cmd = new SqlCommand(updateSql, conn, tx))
+                            {
+                                cmd.ExecuteNonQuery();
+                            }
+
+                            tx.Commit();
+
+                            MessageBox.Show($"在庫調整が完了しました。\n新しい在庫数は {afterStock} です。", "完了", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            this.DialogResult = DialogResult.OK;
+                            this.Close();
                         }
-
-                        tx.Commit();
-
-                        MessageBox.Show($"在庫調整が完了しました。\n新しい在庫数は {afterStock} です。", "完了", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                        this.DialogResult = DialogResult.OK; 
-                        this.Close(); 
-                    }
-                    catch (Exception innerEx)
-                    {
-                        tx.Rollback();
-
-                        throw new Exception("データベースの更新中にエラーが発生したため、処理を取り消しました。\n" + innerEx.Message);
+                        catch (Exception innerEx)
+                        {
+                            tx.Rollback();
+                            throw new Exception("データベースの更新中にエラーが発生したため、処理を取り消しました。\n" + innerEx.Message);
+                        }
                     }
                 }
-            }
             }
             catch (Exception ex)
             {
