@@ -31,10 +31,20 @@ namespace EquipFormApp
             dgvEquipCate.RowHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             dgvEquipCate.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
-            // 3. 全体の幅設定
+
             dgvEquipCate.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // 4. データ部分（セル）のピンポイント配置設定
+            if (dgvEquipCate.Columns.Contains("備品ID"))
+            {
+                dgvEquipCate.Columns["備品ID"].FillWeight = 70;       // かなり狭め
+                dgvEquipCate.Columns["備品名"].FillWeight = 150;      // 広く
+                dgvEquipCate.Columns["カテゴリ名"].FillWeight = 90;   // やや狭め
+                dgvEquipCate.Columns["在庫数"].FillWeight = 70;       // かなり狭め
+                dgvEquipCate.Columns["保管場所"].FillWeight = 100;    // 標準
+                dgvEquipCate.Columns["備考"].FillWeight = 150;        // 広く
+                dgvEquipCate.Columns["最終更新日時"].FillWeight = 100; // 日付が入るピッタリサイズ
+            }
+
             if (dgvEquipCate.Columns.Contains("備品ID"))
             {
                 dgvEquipCate.Columns["備品ID"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -45,7 +55,13 @@ namespace EquipFormApp
                 dgvEquipCate.Columns["在庫数"].DefaultCellStyle.Format = "#,##0";
             }
 
-            // 5. 表頭の文字をループで真ん中寄せ ＆ ソート矢印用のスペース微調整
+            //最終更新日のフォーマット中央に寄せる
+            if (dgvEquipCate.Columns.Contains("最終更新日時"))
+            {
+                dgvEquipCate.Columns["最終更新日時"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgvEquipCate.Columns["最終更新日時"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
+            }
+
             foreach (DataGridViewColumn col in dgvEquipCate.Columns)
             {
                 col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -130,25 +146,19 @@ namespace EquipFormApp
                             DataTable dt = new DataTable();
                             adapter.Fill(dt);
 
-                            // ★超重要ポイント：検索解除用の「すべて」という行を先頭に手作りで追加する
                             DataRow row = dt.NewRow();
-                            row["CategoryCode"] = "";          // 裏側で持つ値は「空文字」
-                            row["CategoryName"] = "（すべて）";  // 画面に表示する文字
-                            dt.Rows.InsertAt(row, 0);          // 0番目（一番上）に差し込む
+                            row["CategoryCode"] = "";
+                            row["CategoryName"] = "（すべて）";
+                            dt.Rows.InsertAt(row, 0);
 
-                            // コンボボックスにデータを紐付ける
                             cmbCategory.DataSource = dt;
 
-                            // 画面に表示する列（ユーザーが見る文字）
                             cmbCategory.DisplayMember = "CategoryName";
 
-                            // 裏側で保持する値（後で検索する時にプログラムが使うコード）
                             cmbCategory.ValueMember = "CategoryCode";
 
-                            // 初期状態を一番上の「（すべて）」にしておく
                             cmbCategory.SelectedIndex = 0;
 
-                            // （おまけ）ユーザーがキーボードで勝手な文字を入力できないようにする
                             cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
                         }
                     }
@@ -176,7 +186,7 @@ namespace EquipFormApp
                     e.Quantity      AS [在庫数],
                     e.Location      AS [保管場所],
                     e.Note          AS [備考],
-                    e.UpdatedAt     AS [最終更新日時] -- ★ここを足しました！
+                    e.UpdatedAt     AS [最終更新日時] 
                 FROM 
                     M_Equipment e
                 INNER JOIN 
@@ -320,5 +330,32 @@ namespace EquipFormApp
             btnInsert.Focus();
         }
 
+        private void frmMain_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F1)
+            {
+                btnInsert.PerformClick();
+            }
+
+            if (e.KeyCode == Keys.F3)
+            {
+                btnEdit.PerformClick();
+            }
+
+            if (e.KeyCode == Keys.F5)
+            {
+                btnAdju.PerformClick();
+            }
+
+            if (e.KeyCode == Keys.F7)
+            {
+                btnMaster.PerformClick();
+            }
+
+            if (e.KeyCode == Keys.F9)
+            {
+                btnSearch.PerformClick();
+            }
+        }
     }
 }
