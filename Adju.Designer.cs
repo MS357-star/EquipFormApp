@@ -1,4 +1,4 @@
-﻿namespace EquipFormApp
+namespace EquipFormApp
 {
     partial class Adju
     {
@@ -28,44 +28,41 @@
         /// </summary>
         private void InitializeComponent()
         {
-            dgvStock = new DataGridView();
             txtAdjuSum = new TextBox();
             cmbAdjuUnder = new ComboBox();
             btnEnter = new Button();
-            button2 = new Button();
+            btnClose = new Button();
             lblAdjuSum = new Label();
             lblAdjuUnder = new Label();
             grpTop = new GroupBox();
             grpBottom = new GroupBox();
-            ((System.ComponentModel.ISupportInitialize)dgvStock).BeginInit();
+            lbl1 = new Label();
+            txtEquipId = new TextBox();
+            lbl2 = new Label();
+            txtEquipName = new TextBox();
+            lbl3 = new Label();
+            txtCurrentStock = new TextBox();
+            grpinfo = new GroupBox();
             grpTop.SuspendLayout();
             grpBottom.SuspendLayout();
+            grpinfo.SuspendLayout();
             SuspendLayout();
-            // 
-            // dgvStock
-            // 
-            dgvStock.AllowUserToAddRows = false;
-            dgvStock.AllowUserToDeleteRows = false;
-            dgvStock.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStock.Location = new Point(12, 12);
-            dgvStock.Name = "dgvStock";
-            dgvStock.ReadOnly = true;
-            dgvStock.RowHeadersWidth = 51;
-            dgvStock.Size = new Size(420, 248);
-            dgvStock.TabIndex = 0;
             // 
             // txtAdjuSum
             // 
             txtAdjuSum.Location = new Point(12, 68);
+            txtAdjuSum.MaxLength = 5;
             txtAdjuSum.Name = "txtAdjuSum";
             txtAdjuSum.Size = new Size(150, 27);
             txtAdjuSum.TabIndex = 1;
             txtAdjuSum.TextAlign = HorizontalAlignment.Right;
+            txtAdjuSum.KeyPress += txtAdjuSum_KeyPress;
+            txtAdjuSum.Leave += txtAdjuSum_Leave;
             // 
             // cmbAdjuUnder
             // 
             cmbAdjuUnder.FormattingEnabled = true;
-            cmbAdjuUnder.Location = new Point(11, 148);
+            cmbAdjuUnder.Location = new Point(181, 68);
             cmbAdjuUnder.Name = "cmbAdjuUnder";
             cmbAdjuUnder.Size = new Size(151, 28);
             cmbAdjuUnder.TabIndex = 2;
@@ -76,19 +73,19 @@
             btnEnter.Name = "btnEnter";
             btnEnter.Size = new Size(138, 65);
             btnEnter.TabIndex = 3;
-            btnEnter.Text = "確定";
+            btnEnter.Text = "確定(F1)";
             btnEnter.UseVisualStyleBackColor = true;
             btnEnter.Click += btnEnter_Click;
             // 
-            // button2
+            // btnClose
             // 
-            button2.Location = new Point(358, 36);
-            button2.Name = "button2";
-            button2.Size = new Size(138, 65);
-            button2.TabIndex = 4;
-            button2.Text = "閉じる";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += btnClose_Click;
+            btnClose.Location = new Point(358, 36);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new Size(138, 65);
+            btnClose.TabIndex = 4;
+            btnClose.Text = "閉じる(F10)";
+            btnClose.UseVisualStyleBackColor = true;
+            btnClose.Click += btnClose_Click;
             // 
             // lblAdjuSum
             // 
@@ -102,7 +99,7 @@
             // lblAdjuUnder
             // 
             lblAdjuUnder.AutoSize = true;
-            lblAdjuUnder.Location = new Point(12, 125);
+            lblAdjuUnder.Location = new Point(181, 45);
             lblAdjuUnder.Name = "lblAdjuUnder";
             lblAdjuUnder.Size = new Size(69, 20);
             lblAdjuUnder.TabIndex = 6;
@@ -114,51 +111,124 @@
             grpTop.Controls.Add(txtAdjuSum);
             grpTop.Controls.Add(lblAdjuUnder);
             grpTop.Controls.Add(lblAdjuSum);
-            grpTop.Location = new Point(439, 12);
+            grpTop.Location = new Point(270, 12);
             grpTop.Name = "grpTop";
-            grpTop.Size = new Size(169, 248);
+            grpTop.Size = new Size(338, 155);
             grpTop.TabIndex = 7;
             grpTop.TabStop = false;
             // 
             // grpBottom
             // 
             grpBottom.Controls.Add(btnEnter);
-            grpBottom.Controls.Add(button2);
-            grpBottom.Location = new Point(12, 266);
+            grpBottom.Controls.Add(btnClose);
+            grpBottom.Location = new Point(13, 173);
             grpBottom.Name = "grpBottom";
             grpBottom.Size = new Size(595, 117);
             grpBottom.TabIndex = 8;
             grpBottom.TabStop = false;
             // 
+            // lbl1
+            // 
+            lbl1.AutoSize = true;
+            lbl1.Location = new Point(53, 29);
+            lbl1.Name = "lbl1";
+            lbl1.Size = new Size(54, 20);
+            lbl1.TabIndex = 9;
+            lbl1.Text = "備品ID";
+            // 
+            // txtEquipId
+            // 
+            txtEquipId.Location = new Point(113, 26);
+            txtEquipId.Name = "txtEquipId";
+            txtEquipId.ReadOnly = true;
+            txtEquipId.Size = new Size(125, 27);
+            txtEquipId.TabIndex = 10;
+            // 
+            // lbl2
+            // 
+            lbl2.AutoSize = true;
+            lbl2.Location = new Point(53, 72);
+            lbl2.Name = "lbl2";
+            lbl2.Size = new Size(54, 20);
+            lbl2.TabIndex = 11;
+            lbl2.Text = "備品名";
+            // 
+            // txtEquipName
+            // 
+            txtEquipName.Location = new Point(113, 69);
+            txtEquipName.Name = "txtEquipName";
+            txtEquipName.ReadOnly = true;
+            txtEquipName.Size = new Size(125, 27);
+            txtEquipName.TabIndex = 12;
+            // 
+            // lbl3
+            // 
+            lbl3.AutoSize = true;
+            lbl3.Location = new Point(11, 116);
+            lbl3.Name = "lbl3";
+            lbl3.Size = new Size(96, 20);
+            lbl3.TabIndex = 13;
+            lbl3.Text = "現在の在庫数";
+            // 
+            // txtCurrentStock
+            // 
+            txtCurrentStock.Location = new Point(113, 113);
+            txtCurrentStock.Name = "txtCurrentStock";
+            txtCurrentStock.ReadOnly = true;
+            txtCurrentStock.Size = new Size(125, 27);
+            txtCurrentStock.TabIndex = 14;
+            // 
+            // grpinfo
+            // 
+            grpinfo.Controls.Add(lbl1);
+            grpinfo.Controls.Add(txtEquipId);
+            grpinfo.Controls.Add(txtEquipName);
+            grpinfo.Controls.Add(txtCurrentStock);
+            grpinfo.Controls.Add(lbl2);
+            grpinfo.Controls.Add(lbl3);
+            grpinfo.Location = new Point(13, 12);
+            grpinfo.Name = "grpinfo";
+            grpinfo.Size = new Size(251, 155);
+            grpinfo.TabIndex = 15;
+            grpinfo.TabStop = false;
+            // 
             // Adju
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(618, 395);
+            ClientSize = new Size(618, 304);
+            Controls.Add(grpinfo);
             Controls.Add(grpBottom);
             Controls.Add(grpTop);
-            Controls.Add(dgvStock);
+            KeyPreview = true;
             Name = "Adju";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "在庫調整画面";
             Load += Adju_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvStock).EndInit();
+            KeyDown += Adju_KeyDown;
             grpTop.ResumeLayout(false);
             grpTop.PerformLayout();
             grpBottom.ResumeLayout(false);
+            grpinfo.ResumeLayout(false);
+            grpinfo.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
-
-        private DataGridView dgvStock;
         private TextBox txtAdjuSum;
         private ComboBox cmbAdjuUnder;
         private Button btnEnter;
-        private Button button2;
+        private Button btnClose;
         private Label lblAdjuSum;
         private Label lblAdjuUnder;
         private GroupBox grpTop;
         private GroupBox grpBottom;
+        private Label lbl1;
+        private TextBox txtEquipId;
+        private Label lbl2;
+        private TextBox txtEquipName;
+        private Label lbl3;
+        private TextBox txtCurrentStock;
+        private GroupBox grpinfo;
     }
 }
