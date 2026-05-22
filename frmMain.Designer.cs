@@ -105,6 +105,7 @@
             dgvEquipCate.RowHeadersWidth = 51;
             dgvEquipCate.Size = new Size(1087, 260);
             dgvEquipCate.TabIndex = 10;
+            dgvEquipCate.RowPostPaint += dgvList_RowPostPaint;
             // 
             // btnEdit
             // 
@@ -153,6 +154,7 @@
             Controls.Add(txtEquip);
             Name = "frmMain";
             Text = "備品一覧画面";
+            Activated += frmMain_Activated;
             Load += frmMain_Load;
             ((System.ComponentModel.ISupportInitialize)dgvEquipCate).EndInit();
             ResumeLayout(false);

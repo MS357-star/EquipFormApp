@@ -57,6 +57,8 @@
             txtEquipSum.Name = "txtEquipSum";
             txtEquipSum.Size = new Size(125, 27);
             txtEquipSum.TabIndex = 2;
+            txtEquipSum.KeyPress += txtEquipSum_KeyPress;
+            txtEquipSum.Leave += txtEquipSum_Leave;
             // 
             // txtEquipFrom
             // 
@@ -161,8 +163,10 @@
             txtEquipId.Location = new Point(132, 82);
             txtEquipId.Mask = "\\E\\Q0000";
             txtEquipId.Name = "txtEquipId";
+            txtEquipId.PromptChar = ' ';
             txtEquipId.Size = new Size(125, 27);
             txtEquipId.TabIndex = 14;
+            txtEquipId.Enter += txtEquipId_Enter;
             // 
             // frmEdit
             // 
