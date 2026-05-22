@@ -1,4 +1,4 @@
-﻿namespace EquipFormApp
+namespace EquipFormApp
 {
     partial class frmEdit
     {
@@ -172,6 +172,36 @@
             txtEquipId.Name = "txtEquipId";
             txtEquipId.PromptChar = ' ';
             txtEquipId.Size = new Size(125, 27);
+            txtEquipId.TabIndex = 2;
+            // 
+            // grpTop
+            // 
+            grpTop.Controls.Add(txtRem);
+            grpTop.Controls.Add(txtEquipId);
+            grpTop.Controls.Add(txtEquipName);
+            grpTop.Controls.Add(lblRem);
+            grpTop.Controls.Add(txtEquipSum);
+            grpTop.Controls.Add(lblEquipFrom);
+            grpTop.Controls.Add(txtEquipFrom);
+            grpTop.Controls.Add(lblEquipSum);
+            grpTop.Controls.Add(cmbCategory);
+            grpTop.Controls.Add(lblCategory);
+            grpTop.Controls.Add(lblEquipID);
+            grpTop.Controls.Add(lblEquipName);
+            grpTop.Location = new Point(12, 12);
+            grpTop.Name = "grpTop";
+            grpTop.Size = new Size(380, 279);
+            grpTop.TabIndex = 15;
+            grpTop.TabStop = false;
+            // 
+            // grpBottom
+            // 
+            grpBottom.Controls.Add(btnSave);
+            grpBottom.Controls.Add(btnClose);
+            grpBottom.Location = new Point(12, 297);
+            grpBottom.Name = "grpBottom";
+            grpBottom.Size = new Size(380, 97);
+            grpBottom.TabStop = false;
             txtEquipId.TabIndex = 14;
             txtEquipId.Enter += txtEquipId_Enter;
             // 
