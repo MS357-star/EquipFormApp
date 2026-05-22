@@ -67,7 +67,7 @@ namespace EquipFormApp
                             cmbCategory.DataSource = dt;
                             cmbCategory.DisplayMember = "CategoryName";
                             cmbCategory.ValueMember = "CategoryCode";
-                            cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList; 
+                            cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
                         }
                     }
                 }

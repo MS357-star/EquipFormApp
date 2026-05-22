@@ -97,16 +97,17 @@ namespace EquipFormApp
         private void frmMaster_Load(object sender, EventArgs e)
         {
             // カラム数を指定
-            dgvCategory.ColumnCount = 3;
+            dgvCategory.ColumnCount = 2;
 
             // カラム名を指定
-            dgvCategory.Columns[0].HeaderText = "Id";
-            dgvCategory.Columns[1].HeaderText = "カテゴリコード";
-            dgvCategory.Columns[2].HeaderText = "カテゴリ名";
+            dgvCategory.Columns[0].HeaderText = "カテゴリコード";
+            dgvCategory.Columns[1].HeaderText = "カテゴリ名";
 
-            dgvCategory.Columns[0].Width = 50;
+            dgvCategory.Columns[0].Width = 100;
             dgvCategory.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dgvCategory.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+            //カテゴリコードを中央に配置
+            dgvCategory.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             dgvCategory.Rows.Clear();
             // 接続成功時の処理
@@ -115,7 +116,6 @@ namespace EquipFormApp
                 // 3 SqlConnectionのインスタンスを作成
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    int intCount = 1;
                     // 4 接続
                     connection.Open();
 
@@ -126,15 +126,12 @@ namespace EquipFormApp
                         {
                             while (reader.Read())
                             {
-                                int intId = intCount;
                                 string strCode = reader["CategoryCode"].ToString();
                                 string strName = reader["CategoryName"].ToString();
 
-                                dgvCategory.Rows.Add(intId, strCode, strName);
+                                dgvCategory.Rows.Add(strCode, strName);
 
-                                //lblTable.Text += $"ID: {intId}, CODE: {strCode}, 名前: {strName}, 略: {strRyaku}" + "\n";
-                                //Console.WriteLine($"ID: {id}, 名前: {name}, 年齢: {age}");
-                                intCount++;
+
                             }
                         }
                     }
@@ -297,6 +294,25 @@ namespace EquipFormApp
             {
                 e.SuppressKeyPress = true; // 入力を無効にする
             }
+        }
+
+        private void dgvCategory_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            string strRowNumber = (e.RowIndex + 1).ToString();
+
+            Rectangle rect = new Rectangle(
+                e.RowBounds.Left,
+                e.RowBounds.Top,
+                dgvCategory.RowHeadersWidth,
+                e.RowBounds.Height);
+
+            StringFormat format = new StringFormat();
+            format.Alignment = StringAlignment.Far;
+            format.LineAlignment = StringAlignment.Center;
+
+            rect.Offset(-16, 0);
+
+            e.Graphics.DrawString(strRowNumber, dgvCategory.Font, Brushes.Black, rect, format);
         }
     }
 }

@@ -35,7 +35,11 @@
             button2 = new Button();
             lblAdjuSum = new Label();
             lblAdjuUnder = new Label();
+            grpTop = new GroupBox();
+            grpBottom = new GroupBox();
             ((System.ComponentModel.ISupportInitialize)dgvStock).BeginInit();
+            grpTop.SuspendLayout();
+            grpBottom.SuspendLayout();
             SuspendLayout();
             // 
             // dgvStock
@@ -52,22 +56,23 @@
             // 
             // txtAdjuSum
             // 
-            txtAdjuSum.Location = new Point(456, 98);
+            txtAdjuSum.Location = new Point(12, 68);
             txtAdjuSum.Name = "txtAdjuSum";
-            txtAdjuSum.Size = new Size(125, 27);
+            txtAdjuSum.Size = new Size(150, 27);
             txtAdjuSum.TabIndex = 1;
+            txtAdjuSum.TextAlign = HorizontalAlignment.Right;
             // 
             // cmbAdjuUnder
             // 
             cmbAdjuUnder.FormattingEnabled = true;
-            cmbAdjuUnder.Location = new Point(456, 178);
+            cmbAdjuUnder.Location = new Point(11, 148);
             cmbAdjuUnder.Name = "cmbAdjuUnder";
             cmbAdjuUnder.Size = new Size(151, 28);
             cmbAdjuUnder.TabIndex = 2;
             // 
             // btnEnter
             // 
-            btnEnter.Location = new Point(112, 295);
+            btnEnter.Location = new Point(100, 36);
             btnEnter.Name = "btnEnter";
             btnEnter.Size = new Size(138, 65);
             btnEnter.TabIndex = 3;
@@ -77,7 +82,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(378, 295);
+            button2.Location = new Point(358, 36);
             button2.Name = "button2";
             button2.Size = new Size(138, 65);
             button2.TabIndex = 4;
@@ -88,7 +93,7 @@
             // lblAdjuSum
             // 
             lblAdjuSum.AutoSize = true;
-            lblAdjuSum.Location = new Point(456, 75);
+            lblAdjuSum.Location = new Point(12, 45);
             lblAdjuSum.Name = "lblAdjuSum";
             lblAdjuSum.Size = new Size(54, 20);
             lblAdjuSum.TabIndex = 5;
@@ -97,30 +102,51 @@
             // lblAdjuUnder
             // 
             lblAdjuUnder.AutoSize = true;
-            lblAdjuUnder.Location = new Point(456, 155);
+            lblAdjuUnder.Location = new Point(12, 125);
             lblAdjuUnder.Name = "lblAdjuUnder";
             lblAdjuUnder.Size = new Size(69, 20);
             lblAdjuUnder.TabIndex = 6;
             lblAdjuUnder.Text = "調整理由";
             // 
+            // grpTop
+            // 
+            grpTop.Controls.Add(cmbAdjuUnder);
+            grpTop.Controls.Add(txtAdjuSum);
+            grpTop.Controls.Add(lblAdjuUnder);
+            grpTop.Controls.Add(lblAdjuSum);
+            grpTop.Location = new Point(439, 12);
+            grpTop.Name = "grpTop";
+            grpTop.Size = new Size(169, 248);
+            grpTop.TabIndex = 7;
+            grpTop.TabStop = false;
+            // 
+            // grpBottom
+            // 
+            grpBottom.Controls.Add(btnEnter);
+            grpBottom.Controls.Add(button2);
+            grpBottom.Location = new Point(12, 266);
+            grpBottom.Name = "grpBottom";
+            grpBottom.Size = new Size(595, 117);
+            grpBottom.TabIndex = 8;
+            grpBottom.TabStop = false;
+            // 
             // Adju
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(619, 395);
-            Controls.Add(lblAdjuUnder);
-            Controls.Add(lblAdjuSum);
-            Controls.Add(button2);
-            Controls.Add(btnEnter);
-            Controls.Add(cmbAdjuUnder);
-            Controls.Add(txtAdjuSum);
+            ClientSize = new Size(618, 395);
+            Controls.Add(grpBottom);
+            Controls.Add(grpTop);
             Controls.Add(dgvStock);
             Name = "Adju";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "在庫調整画面";
             Load += Adju_Load;
             ((System.ComponentModel.ISupportInitialize)dgvStock).EndInit();
+            grpTop.ResumeLayout(false);
+            grpTop.PerformLayout();
+            grpBottom.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -132,5 +158,7 @@
         private Button button2;
         private Label lblAdjuSum;
         private Label lblAdjuUnder;
+        private GroupBox grpTop;
+        private GroupBox grpBottom;
     }
 }

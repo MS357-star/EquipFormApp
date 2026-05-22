@@ -231,13 +231,14 @@ namespace EquipFormApp
         {
             using (frmMaster masterForm = new frmMaster())
             {
-  
+
                 masterForm.ShowDialog();
             }
 
- 
+
             LoadCategoryCombo();
             LoadEquipmentData();
         }
+
     }
 }

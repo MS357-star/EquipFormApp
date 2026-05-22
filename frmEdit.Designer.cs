@@ -42,70 +42,78 @@
             lblEquipFrom = new Label();
             lblRem = new Label();
             txtEquipId = new MaskedTextBox();
+            grpTop = new GroupBox();
+            grpBottom = new GroupBox();
+            grpTop.SuspendLayout();
+            grpBottom.SuspendLayout();
             SuspendLayout();
             // 
             // txtEquipName
             // 
-            txtEquipName.Location = new Point(132, 115);
+            txtEquipName.Location = new Point(110, 108);
+            txtEquipName.MaxLength = 50;
             txtEquipName.Name = "txtEquipName";
             txtEquipName.Size = new Size(125, 27);
-            txtEquipName.TabIndex = 1;
+            txtEquipName.TabIndex = 3;
             // 
             // txtEquipSum
             // 
-            txtEquipSum.Location = new Point(132, 148);
+            txtEquipSum.Location = new Point(110, 141);
             txtEquipSum.Name = "txtEquipSum";
             txtEquipSum.Size = new Size(125, 27);
-            txtEquipSum.TabIndex = 2;
+            txtEquipSum.TabIndex = 4;
+            txtEquipSum.TextAlign = HorizontalAlignment.Right;
             // 
             // txtEquipFrom
             // 
-            txtEquipFrom.Location = new Point(132, 181);
+            txtEquipFrom.Location = new Point(110, 174);
+            txtEquipFrom.MaxLength = 30;
             txtEquipFrom.Name = "txtEquipFrom";
             txtEquipFrom.Size = new Size(125, 27);
-            txtEquipFrom.TabIndex = 3;
+            txtEquipFrom.TabIndex = 5;
             // 
             // cmbCategory
             // 
             cmbCategory.FormattingEnabled = true;
-            cmbCategory.Location = new Point(132, 34);
+            cmbCategory.Location = new Point(110, 27);
             cmbCategory.Name = "cmbCategory";
             cmbCategory.Size = new Size(151, 28);
-            cmbCategory.TabIndex = 4;
+            cmbCategory.TabIndex = 1;
             // 
             // btnSave
             // 
-            btnSave.Location = new Point(45, 307);
+            btnSave.Location = new Point(38, 21);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(134, 67);
-            btnSave.TabIndex = 5;
+            btnSave.TabIndex = 7;
             btnSave.Text = "保存";
             btnSave.UseVisualStyleBackColor = true;
             btnSave.Click += btnSave_Click;
             // 
             // btnClose
             // 
-            btnClose.Location = new Point(256, 307);
+            btnClose.Location = new Point(209, 21);
             btnClose.Name = "btnClose";
             btnClose.RightToLeft = RightToLeft.No;
             btnClose.Size = new Size(136, 67);
-            btnClose.TabIndex = 6;
+            btnClose.TabIndex = 8;
             btnClose.Text = "閉じる";
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
             // 
             // txtRem
             // 
-            txtRem.Location = new Point(132, 214);
+            txtRem.Location = new Point(110, 207);
+            txtRem.MaxLength = 200;
             txtRem.Multiline = true;
             txtRem.Name = "txtRem";
             txtRem.Size = new Size(240, 53);
-            txtRem.TabIndex = 7;
+            txtRem.TabIndex = 6;
             // 
             // lblEquipID
             // 
             lblEquipID.AutoSize = true;
-            lblEquipID.Location = new Point(72, 89);
+            lblEquipID.Location = new Point(50, 82);
             lblEquipID.Name = "lblEquipID";
             lblEquipID.Size = new Size(54, 20);
             lblEquipID.TabIndex = 8;
@@ -114,7 +122,7 @@
             // lblEquipName
             // 
             lblEquipName.AutoSize = true;
-            lblEquipName.Location = new Point(72, 122);
+            lblEquipName.Location = new Point(50, 115);
             lblEquipName.Name = "lblEquipName";
             lblEquipName.Size = new Size(54, 20);
             lblEquipName.TabIndex = 9;
@@ -123,7 +131,7 @@
             // lblCategory
             // 
             lblCategory.AutoSize = true;
-            lblCategory.Location = new Point(74, 42);
+            lblCategory.Location = new Point(52, 35);
             lblCategory.Name = "lblCategory";
             lblCategory.Size = new Size(52, 20);
             lblCategory.TabIndex = 10;
@@ -132,7 +140,7 @@
             // lblEquipSum
             // 
             lblEquipSum.AutoSize = true;
-            lblEquipSum.Location = new Point(72, 155);
+            lblEquipSum.Location = new Point(50, 148);
             lblEquipSum.Name = "lblEquipSum";
             lblEquipSum.Size = new Size(54, 20);
             lblEquipSum.TabIndex = 11;
@@ -141,7 +149,7 @@
             // lblEquipFrom
             // 
             lblEquipFrom.AutoSize = true;
-            lblEquipFrom.Location = new Point(57, 188);
+            lblEquipFrom.Location = new Point(35, 181);
             lblEquipFrom.Name = "lblEquipFrom";
             lblEquipFrom.Size = new Size(69, 20);
             lblEquipFrom.TabIndex = 12;
@@ -150,7 +158,7 @@
             // lblRem
             // 
             lblRem.AutoSize = true;
-            lblRem.Location = new Point(87, 247);
+            lblRem.Location = new Point(65, 240);
             lblRem.Name = "lblRem";
             lblRem.Size = new Size(39, 20);
             lblRem.TabIndex = 13;
@@ -158,36 +166,57 @@
             // 
             // txtEquipId
             // 
-            txtEquipId.Location = new Point(132, 82);
+            txtEquipId.Location = new Point(110, 75);
             txtEquipId.Mask = "\\E\\Q0000";
             txtEquipId.Name = "txtEquipId";
             txtEquipId.Size = new Size(125, 27);
-            txtEquipId.TabIndex = 14;
+            txtEquipId.TabIndex = 2;
+            // 
+            // grpTop
+            // 
+            grpTop.Controls.Add(txtRem);
+            grpTop.Controls.Add(txtEquipId);
+            grpTop.Controls.Add(txtEquipName);
+            grpTop.Controls.Add(lblRem);
+            grpTop.Controls.Add(txtEquipSum);
+            grpTop.Controls.Add(lblEquipFrom);
+            grpTop.Controls.Add(txtEquipFrom);
+            grpTop.Controls.Add(lblEquipSum);
+            grpTop.Controls.Add(cmbCategory);
+            grpTop.Controls.Add(lblCategory);
+            grpTop.Controls.Add(lblEquipID);
+            grpTop.Controls.Add(lblEquipName);
+            grpTop.Location = new Point(12, 12);
+            grpTop.Name = "grpTop";
+            grpTop.Size = new Size(380, 279);
+            grpTop.TabIndex = 15;
+            grpTop.TabStop = false;
+            // 
+            // grpBottom
+            // 
+            grpBottom.Controls.Add(btnSave);
+            grpBottom.Controls.Add(btnClose);
+            grpBottom.Location = new Point(12, 297);
+            grpBottom.Name = "grpBottom";
+            grpBottom.Size = new Size(380, 97);
+            grpBottom.TabIndex = 16;
+            grpBottom.TabStop = false;
             // 
             // frmEdit
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(427, 406);
-            Controls.Add(txtEquipId);
-            Controls.Add(lblRem);
-            Controls.Add(lblEquipFrom);
-            Controls.Add(lblEquipSum);
-            Controls.Add(lblCategory);
-            Controls.Add(lblEquipName);
-            Controls.Add(lblEquipID);
-            Controls.Add(txtRem);
-            Controls.Add(btnClose);
-            Controls.Add(btnSave);
-            Controls.Add(cmbCategory);
-            Controls.Add(txtEquipFrom);
-            Controls.Add(txtEquipSum);
-            Controls.Add(txtEquipName);
+            ClientSize = new Size(404, 406);
+            Controls.Add(grpBottom);
+            Controls.Add(grpTop);
             Name = "frmEdit";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "備品登録・編集画面";
             Load += frmEdit_Load;
+            grpTop.ResumeLayout(false);
+            grpTop.PerformLayout();
+            grpBottom.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -205,5 +234,7 @@
         private Label lblEquipFrom;
         private Label lblRem;
         private MaskedTextBox txtEquipId;
+        private GroupBox grpTop;
+        private GroupBox grpBottom;
     }
 }
