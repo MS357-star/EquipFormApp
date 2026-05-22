@@ -305,7 +305,7 @@ namespace EquipFormApp
                 return;
             }
 
-            var result = MessageBox.Show("削除しますか？", "確認", MessageBoxButtons.YesNo);
+            var result = MessageBox.Show("削除しますか？", "確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
             if (result == DialogResult.Yes)
             {
                 string sql = $"DELETE FROM M_Category WHERE CategoryCode = '{esc(txtCateCode.Text)}'";
@@ -339,6 +339,10 @@ namespace EquipFormApp
 
         private void txtCateCode_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.F1) btnInsert.PerformClick();
+            if (e.KeyCode == Keys.F3) btnUpdate.PerformClick();
+            if (e.KeyCode == Keys.F6) btnDelete.PerformClick();
+            if (e.KeyCode == Keys.F10) btnClose.PerformClick();
             //数字のみ入力可能にする
             if (!char.IsControl((char)e.KeyCode) && !char.IsDigit((char)e.KeyCode))
             {
@@ -363,6 +367,36 @@ namespace EquipFormApp
             rect.Offset(-16, 0);
 
             e.Graphics.DrawString(strRowNumber, dgvCategory.Font, Brushes.Black, rect, format);
+        }
+
+        private void txtCateCode_TextChanged(object sender, EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+
+            // 現在のカーソル位置を保存
+            int sel = tb.SelectionStart;
+
+            // 全角 → 半角に変換
+            string half = Microsoft.VisualBasic.Strings.StrConv(tb.Text, Microsoft.VisualBasic.VbStrConv.Narrow, 0);
+
+            // 変換後の文字列をセット
+            tb.Text = half;
+
+            // カーソル位置を復元
+            tb.SelectionStart = sel;
+        }
+
+        private void btnInsert_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F1) btnInsert.PerformClick();
+            if (e.KeyCode == Keys.F3) btnUpdate.PerformClick();
+            if (e.KeyCode == Keys.F6) btnDelete.PerformClick();
+            if (e.KeyCode == Keys.F10) btnClose.PerformClick();
+        }
+
+        private void frmMaster_Activated(object sender, EventArgs e)
+        {
+            txtCateCode.Focus();
         }
     }
 }
