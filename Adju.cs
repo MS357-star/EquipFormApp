@@ -1,21 +1,14 @@
 using Microsoft.Data.SqlClient;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace EquipFormApp
 {
     public partial class Adju : Form
     {
-
         private readonly string connectionString = "Data Source=192.168.3.19;Initial Catalog=Times26;User ID=JouhouGiken;Password=System26;TrustServerCertificate=True";
+
         public string SelectedEquipmentId { get; set; }
         public string SelectedEquipmentName { get; set; }
         public string SelectedQuantity { get; set; }
@@ -25,45 +18,41 @@ namespace EquipFormApp
             InitializeComponent();
         }
 
-
-        private void SetGridDesign()
-        {
-            if (dgvStock.Columns.Count == 0) return;
-            dgvStock.EnableHeadersVisualStyles = false;
-            dgvStock.ColumnHeadersDefaultCellStyle.BackColor = Color.LightSkyBlue;
-            dgvStock.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgvStock.RowHeadersDefaultCellStyle.BackColor = Color.LightSkyBlue;
-        }
-
         private void Adju_Load(object sender, EventArgs e)
         {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("備品ID");
-            dt.Columns.Add("備品名");
-            dt.Columns.Add("現在の在庫数");
+            // DataGridViewの処理を削除し、テキストボックスに値をセットする処理に変更
+            txtEquipId.Text = SelectedEquipmentId;
+            txtEquipId.ReadOnly = true;
+            txtEquipId.BackColor = Color.WhiteSmoke;
 
-            dt.Rows.Add(SelectedEquipmentId, SelectedEquipmentName, SelectedQuantity);
+            txtEquipName.Text = SelectedEquipmentName;
+            txtEquipName.ReadOnly = true;
+            txtEquipName.BackColor = Color.WhiteSmoke;
 
-            dgvStock.DataSource = dt;
+            // 在庫数を見やすくカンマ区切りにして表示（元のデータにカンマが無い場合を考慮）
+            if (int.TryParse(SelectedQuantity.Replace(",", ""), out int currentQty))
+            {
+                txtCurrentStock.Text = currentQty.ToString("#,##0");
+            }
+            else
+            {
+                txtCurrentStock.Text = SelectedQuantity;
+            }
+            txtCurrentStock.ReadOnly = true;
+            txtCurrentStock.BackColor = Color.WhiteSmoke;
 
-            dgvStock.ReadOnly = true;
-            dgvStock.AllowUserToAddRows = false;
-            dgvStock.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
+            // コンボボックスの初期設定
             cmbAdjuUnder.Items.Clear();
             cmbAdjuUnder.Items.Add("払い出し");
             cmbAdjuUnder.Items.Add("補充");
-
             cmbAdjuUnder.SelectedIndex = 0;
-
             cmbAdjuUnder.DropDownStyle = ComboBoxStyle.DropDownList;
-            SetGridDesign();
         }
 
         // 「閉じる」ボタンが押された時の処理
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.Close(); 
+            this.Close();
         }
 
         private void btnEnter_Click(object sender, EventArgs e)
@@ -85,6 +74,8 @@ namespace EquipFormApp
                 txtAdjuSum.Focus();
                 return;
             }
+
+            // 入力された数字を「絶対値（プラス）」にする
             int absAdjustNum = Math.Abs(adjustNum);
 
             int currentStock = int.Parse(SelectedQuantity.Replace(",", ""));
@@ -94,7 +85,6 @@ namespace EquipFormApp
 
             if (mode == "払い出し")
             {
-               
                 afterStock = currentStock - absAdjustNum;
             }
             else if (mode == "補充")
@@ -115,6 +105,15 @@ namespace EquipFormApp
                 return;
             }
 
+            // 上限オーバーチェック
+            if (afterStock > 99999)
+            {
+                MessageBox.Show($"在庫数の上限オーバーです。\n補充後の合計が5桁（99,999）を超えることはできません。\n（現在の在庫数：{currentStock}）", "入力エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtAdjuSum.Focus();
+                return;
+            }
+
+            // 最終確認
             if (MessageBox.Show($"{mode}処理を確定してもよろしいですか？\n（調整後の在庫数：{afterStock}）", "確定確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
                 return;
@@ -166,7 +165,53 @@ namespace EquipFormApp
             }
         }
 
+        private void txtAdjuSum_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == ' ' || e.KeyChar == '　')
+            {
+                e.Handled = true;
+                return;
+            }
 
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; 
+            }
+        }
+
+        private void txtAdjuSum_Leave(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtAdjuSum.Text))
+            {
+                string inputText = txtAdjuSum.Text;
+
+                string[] zenkaku = { "０", "１", "２", "３", "４", "５", "６", "７", "８", "９" };
+                string[] hankaku = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
+                for (int i = 0; i < 10; i++)
+                {
+                    inputText = inputText.Replace(zenkaku[i], hankaku[i]);
+                }
+                string rawSum = inputText.Replace(",", "").Replace(" ", "").Replace("　", "");
+
+                if (int.TryParse(rawSum, out int m))
+                {
+                    txtAdjuSum.Text = m.ToString("#,##0");
+                }
+            }
+        }
+
+        private void Adju_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F1)
+            {
+                btnEnter.PerformClick();
+            }
+
+            if (e.KeyCode == Keys.F10)
+            {
+                btnClose.PerformClick();
+            }
+        }
     }
 }
-
