@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -125,7 +125,7 @@ namespace EquipFormApp
                 txtEquipSum.Focus();
                 return;
             }
-            if (!int.TryParse(txtEquipSum.Text, out int parsedQuantity) || parsedQuantity < 0)
+            if (!int.TryParse(txtEquipSum.Text.Replace(",", ""), out int parsedQuantity) || parsedQuantity < 0)
             {
                 MessageBox.Show("在庫数には 0 以上の半角数字を入力してください。", "入力エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtEquipSum.Focus();
@@ -265,7 +265,7 @@ namespace EquipFormApp
                     txtEquipId.SelectionStart = 2;
                 }
                 {
-                    txtEquipId.SelectionStart = txtEquipId.Text.Trim().Length; 
+                    txtEquipId.SelectionStart = txtEquipId.Text.Trim().Length;
                 }
             }));
         }
