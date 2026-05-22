@@ -1,6 +1,7 @@
 using Microsoft.Data.SqlClient;
 using System;
 using System.Data;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 
@@ -47,6 +48,7 @@ namespace EquipFormApp
                 txtEquipFrom.Text = SelectedLocation;
                 txtRem.Text = SelectedNote;
             }
+
         }
 
         private void LoadCategoryCombo()
@@ -253,11 +255,37 @@ namespace EquipFormApp
             }
         }
 
+        private void txtEquipSum_TextChanged(object objSender, EventArgs e)
+        {
+            TextBox tb = (TextBox)objSender;
+
+            string rawText = Microsoft.VisualBasic.Strings.StrConv(tb.Text, Microsoft.VisualBasic.VbStrConv.Narrow, 0);
+
+            string raw = rawText.Replace(",", "");
+
+            if (long.TryParse(raw, out long value))
+            {
+                int sel = tb.SelectionStart;
+                int oldLength = tb.Text.Length;
+
+                tb.Text = value.ToString("#,0");
+
+                int newLength = tb.Text.Length;
+                int diff = newLength - oldLength;
+
+                tb.SelectionStart = Math.Max(0, sel + diff);
+            }
+            else if (string.IsNullOrEmpty(raw))
+            {
+                tb.Text = "";
+            }
+        }
 
         private void txtEquipId_Enter(object sender, EventArgs e)
         {
             // 非同期（BeginInvoke）を使って、フォーカス移動が完全に終わった後にカーソル位置を動かす
-            this.BeginInvoke(new Action(() => {
+            this.BeginInvoke(new Action(() =>
+            {
                 string currentText = txtEquipId.Text.Replace(" ", "").Trim();
 
                 if (currentText == "EQ")
@@ -268,6 +296,76 @@ namespace EquipFormApp
                     txtEquipId.SelectionStart = txtEquipId.Text.Trim().Length;
                 }
             }));
+        }
+
+        private void txtEquipId_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar >= '０' && e.KeyChar <= '９')
+            {
+                e.Handled = true;
+                return;
+            }
+            // 0～9の数字以外の入力を無視する
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtEquipId_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                e.SuppressKeyPress = true;
+            }
+
+            if (e.KeyCode == Keys.F1) btnSave.PerformClick();
+            if (e.KeyCode == Keys.F10)
+            {
+                btnClose.PerformClick();
+                //SendKeys.Send("A");
+                //e.Handled = true;
+            }
+        }
+
+        private void frmEdit_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F1) btnSave.PerformClick();
+            if (e.KeyCode == Keys.F10)
+            {
+                btnClose.PerformClick();
+                SendKeys.Send("Tab");
+                e.Handled = true;
+            }
+        }
+
+        /*
+        private void txtEquipId_TextChanged(object objSender, EventArgs e)
+        {
+            Regex regex = new Regex("^[EQ0-9]*$"); // 半角数字の正規表現
+            if (!regex.IsMatch(txtEquipId.Text)) // 入力が正規表現にマッチしない場合
+            {
+                MessageBox.Show("半角数字のみを入力してください。"); // エラーメッセージを表示
+                txtEquipId.Text = ""; // 入力をクリア
+            }
+        }
+        */
+
+        private void txtEquipId_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Regex regex = new Regex("^[EQ0-9]*$");
+
+            if (!regex.IsMatch(txtEquipId.Text))
+            {
+                MessageBox.Show("半角英数字(EQ + 数字)のみを入力してください。");
+                txtEquipId.Text = ""; // 入力をクリア
+                e.Cancel = true; // フォーカス移動をキャンセル
+            }
+        }
+
+        private void frmEdit_Activated(object sender, EventArgs e)
+        {
+            txtEquipId.Focus();
         }
     }
 }
