@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,54 +34,94 @@ namespace EquipFormApp
         {
             string esc(string v) => v?.Replace("'", "''") ?? "";
 
-            string sql = $"SELECT COUNT(*) FROM M_Category WHERE CategoryCode = '{esc(code)}'";
+            string sql = $"SELECT CategoryCode FROM M_Category WHERE CategoryCode = '{esc(code)}'";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    int count = (int)command.ExecuteScalar();
-                    return count > 0;   // 1件以上あれば重複
+                    object result = command.ExecuteScalar();
+                    return result != null;   // 何か返ってきたら重複
                 }
             }
         }
 
-        private bool IsCategoryUsed(string code)
+        private bool IsDuplicateName(string strName)
         {
             string esc(string v) => v?.Replace("'", "''") ?? "";
 
-            string sql = $"SELECT COUNT(*) FROM M_Equipment WHERE CategoryCode = '{esc(code)}'";
+            string sql = $"SELECT CategoryName FROM M_Category WHERE CategoryName = '{esc(strName)}'";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    int count = (int)command.ExecuteScalar();
-                    return count > 0; // 1件でも使われていれば true
+                    object result = command.ExecuteScalar();
+                    return result != null;   // 何か返ってきたら重複
                 }
             }
         }
 
+        private string GetLinkedTable(string code)
+        {
+            string esc(string v) => v?.Replace("'", "''") ?? "";
+
+            // ① M_Equipment に紐づいているか
+            string sql1 = $"SELECT CategoryCode FROM M_Equipment WHERE CategoryCode = '{esc(code)}'";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand(sql1, connection))
+                {
+                    object result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        return "M_Equipment";   // ← 紐づいているテーブル名を返す
+                    }
+                }
+            }
+
+            // 他にもテーブルがあるならここに追加していく
+            // 例：M_Stock に紐づいているか
+            /*
+            string sql2 = $"SELECT CategoryCode FROM M_Stock WHERE CategoryCode = '{esc(code)}'";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(sql2, connection))
+                {
+                    object result = command.ExecuteScalar();
+                    if (result != null)
+                    {
+                        return "M_Stock";
+                    }
+                }
+            }
+            */
+
+            return null; // どのテーブルにも紐づいていない
+        }
 
         private bool ExistsCode(string code)
         {
             string esc(string v) => v?.Replace("'", "''") ?? "";
 
-            string sql = $"SELECT COUNT(*) FROM M_Category WHERE CategoryCode = '{esc(code)}'";
+            string sql = $"SELECT CategoryCode FROM M_Category WHERE CategoryCode = '{esc(code)}'";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
-                    int count = (int)command.ExecuteScalar();
-                    return count > 0;
+                    object result = command.ExecuteScalar();
+                    return result != null;
                 }
             }
         }
-
         // 入力チェック
         private bool IsInvalid(TextBox tb, string msg)
         {
@@ -150,8 +190,8 @@ namespace EquipFormApp
         {
             if (e.RowIndex >= 0)
             {
-                txtCateCode.Text = dgvCategory.Rows[e.RowIndex].Cells[1].Value?.ToString();
-                txtCateName.Text = dgvCategory.Rows[e.RowIndex].Cells[2].Value?.ToString();
+                txtCateCode.Text = dgvCategory.Rows[e.RowIndex].Cells[0].Value?.ToString();
+                txtCateName.Text = dgvCategory.Rows[e.RowIndex].Cells[1].Value?.ToString();
             }
         }
 
@@ -179,6 +219,12 @@ namespace EquipFormApp
                 return;
             }
 
+            if (IsDuplicateName(txtCateName.Text))
+            {
+                MessageBox.Show("このカテゴリ名は既に登録されています。");
+                return;
+            }
+
             string sql = $@"INSERT INTO M_Category (CategoryCode, CategoryName) VALUES ('{esc(txtCateCode.Text)}', '{esc(txtCateName.Text)}')";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -198,15 +244,16 @@ namespace EquipFormApp
 
             string CateCode = txtCateCode.Text;
 
+            if (IsInvalid(txtCateCode, "カテゴリコード")) return;
+            if (IsInvalid(txtCateName, "カテゴリ名")) return;
+
             // ★ ここで存在チェック
-            if (!ExistsCode(CateCode))
+            if (!IsDuplicateCode(CateCode))
             {
                 MessageBox.Show("このカテゴリコードは登録されていません。");
                 return;
             }
 
-            if (IsInvalid(txtCateCode, "カテゴリコード")) return;
-            if (IsInvalid(txtCateName, "カテゴリ名")) return;
             // 3桁チェック
             if (!IsThreeDigit(CateCode))
             {
@@ -214,13 +261,16 @@ namespace EquipFormApp
                 return;
             }
 
-
-
+            if (IsDuplicateName(txtCateName.Text))
+            {
+                MessageBox.Show("このカテゴリ名は既に登録されています。");
+                return;
+            }
 
 
 
             if (dgvCategory.CurrentRow == null) return;
-            string code = dgvCategory.CurrentRow.Cells[1].Value.ToString();
+            string code = dgvCategory.CurrentRow.Cells[0].Value.ToString();
 
             string sql = $"UPDATE M_Category SET CategoryName = '{esc(txtCateName.Text)}' WHERE CategoryCode = '{esc(code)}'";
 
@@ -249,9 +299,9 @@ namespace EquipFormApp
                 return;
             }
 
-            if (IsCategoryUsed(txtCateCode.Text))
+            if (GetLinkedTable(txtCateCode.Text) != null)
             {
-                MessageBox.Show("このカテゴリは備品に紐づいているため削除できません。");
+                MessageBox.Show($"このカテゴリは備品に紐づいているため削除できません。");
                 return;
             }
 
