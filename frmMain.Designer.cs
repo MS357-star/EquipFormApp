@@ -47,7 +47,7 @@ namespace EquipFormApp
             // 
             // btnInsert
             // 
-            btnInsert.Location = new Point(86, 26);
+            btnInsert.Location = new Point(95, 15);
             btnInsert.Name = "btnInsert";
             btnInsert.Size = new Size(169, 89);
             btnInsert.TabIndex = 1;
@@ -116,7 +116,7 @@ namespace EquipFormApp
             // 
             // btnEdit
             // 
-            btnEdit.Location = new Point(381, 26);
+            btnEdit.Location = new Point(387, 15);
             btnEdit.Name = "btnEdit";
             btnEdit.Size = new Size(169, 89);
             btnEdit.TabIndex = 2;
@@ -126,7 +126,7 @@ namespace EquipFormApp
             // 
             // btnAdju
             // 
-            btnAdju.Location = new Point(676, 26);
+            btnAdju.Location = new Point(679, 15);
             btnAdju.Name = "btnAdju";
             btnAdju.Size = new Size(169, 89);
             btnAdju.TabIndex = 3;
@@ -136,7 +136,7 @@ namespace EquipFormApp
             // 
             // btnMaster
             // 
-            btnMaster.Location = new Point(971, 26);
+            btnMaster.Location = new Point(971, 15);
             btnMaster.Name = "btnMaster";
             btnMaster.Size = new Size(169, 89);
             btnMaster.TabIndex = 4;
@@ -152,7 +152,7 @@ namespace EquipFormApp
             grpBottom.Controls.Add(btnAdju);
             grpBottom.Location = new Point(10, 390);
             grpBottom.Name = "grpBottom";
-            grpBottom.Size = new Size(1205, 116);
+            grpBottom.Size = new Size(1205, 110);
             grpBottom.TabIndex = 14;
             grpBottom.TabStop = false;
             // 
@@ -173,7 +173,7 @@ namespace EquipFormApp
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1227, 517);
+            ClientSize = new Size(1227, 508);
             Controls.Add(grpTop);
             Controls.Add(grpBottom);
             Controls.Add(dgvEquipCate);
