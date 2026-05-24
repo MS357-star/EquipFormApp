@@ -1,6 +1,6 @@
 namespace EquipFormApp
 {
-    partial class frmEdit
+    partial class Adju
     {
         /// <summary>
         /// Required designer variable.
@@ -28,231 +28,210 @@ namespace EquipFormApp
         /// </summary>
         private void InitializeComponent()
         {
-            txtEquipName = new TextBox();
-            txtEquipSum = new TextBox();
-            txtEquipFrom = new TextBox();
-            cmbCategory = new ComboBox();
-            btnSave = new Button();
+            txtAdjuSum = new TextBox();
+            cmbAdjuUnder = new ComboBox();
+            btnEnter = new Button();
             btnClose = new Button();
-            txtRem = new TextBox();
-            lblEquipID = new Label();
-            lblEquipName = new Label();
-            lblCategory = new Label();
-            lblEquipSum = new Label();
-            lblEquipFrom = new Label();
-            lblRem = new Label();
-            txtEquipId = new MaskedTextBox();
+            lblAdjuSum = new Label();
+            lblAdjuUnder = new Label();
             grpTop = new GroupBox();
             grpBottom = new GroupBox();
+            lbl1 = new Label();
+            txtEquipId = new TextBox();
+            lbl2 = new Label();
+            txtEquipName = new TextBox();
+            lbl3 = new Label();
+            txtCurrentStock = new TextBox();
+            grpinfo = new GroupBox();
             grpTop.SuspendLayout();
             grpBottom.SuspendLayout();
+            grpinfo.SuspendLayout();
             SuspendLayout();
             // 
-            // txtEquipName
+            // txtAdjuSum
             // 
-            txtEquipName.Location = new Point(110, 108);
-            txtEquipName.MaxLength = 50;
-            txtEquipName.Name = "txtEquipName";
-            txtEquipName.Size = new Size(125, 27);
-            txtEquipName.TabIndex = 2;
-            txtEquipName.KeyDown += frmEdit_KeyDown;
+            txtAdjuSum.Location = new Point(12, 68);
+            txtAdjuSum.MaxLength = 5;
+            txtAdjuSum.Name = "txtAdjuSum";
+            txtAdjuSum.Size = new Size(150, 27);
+            txtAdjuSum.TabIndex = 1;
+            txtAdjuSum.TextAlign = HorizontalAlignment.Right;
+            txtAdjuSum.KeyPress += txtAdjuSum_KeyPress;
+            txtAdjuSum.Leave += txtAdjuSum_Leave;
             // 
-            // txtEquipSum
+            // cmbAdjuUnder
             // 
-            txtEquipSum.Location = new Point(110, 141);
-            txtEquipSum.MaxLength = 6;
-            txtEquipSum.Name = "txtEquipSum";
-            txtEquipSum.Size = new Size(125, 27);
-            txtEquipSum.TabIndex = 3;
-            txtEquipSum.TextAlign = HorizontalAlignment.Right;
-            txtEquipSum.TextChanged += txtEquipSum_TextChanged;
-            txtEquipSum.KeyDown += frmEdit_KeyDown;
-            txtEquipSum.KeyPress += txtEquipSum_KeyPress;
-            txtEquipSum.Leave += txtEquipSum_Leave;
+            cmbAdjuUnder.FormattingEnabled = true;
+            cmbAdjuUnder.Location = new Point(181, 68);
+            cmbAdjuUnder.Name = "cmbAdjuUnder";
+            cmbAdjuUnder.Size = new Size(151, 28);
+            cmbAdjuUnder.TabIndex = 2;
             // 
-            // txtEquipFrom
+            // btnEnter
             // 
-            txtEquipFrom.Location = new Point(110, 174);
-            txtEquipFrom.MaxLength = 30;
-            txtEquipFrom.Name = "txtEquipFrom";
-            txtEquipFrom.Size = new Size(125, 27);
-            txtEquipFrom.TabIndex = 4;
-            txtEquipFrom.KeyDown += frmEdit_KeyDown;
-            // 
-            // cmbCategory
-            // 
-            cmbCategory.FormattingEnabled = true;
-            cmbCategory.Location = new Point(110, 27);
-            cmbCategory.Name = "cmbCategory";
-            cmbCategory.Size = new Size(151, 28);
-            cmbCategory.TabIndex = 0;
-            cmbCategory.KeyDown += frmEdit_KeyDown;
-            // 
-            // btnSave
-            // 
-            btnSave.Location = new Point(38, 21);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(134, 67);
-            btnSave.TabIndex = 6;
-            btnSave.Text = "保存(F1)";
-            btnSave.UseVisualStyleBackColor = true;
-            btnSave.Click += btnSave_Click;
-            btnSave.KeyDown += frmEdit_KeyDown;
+            btnEnter.Location = new Point(100, 30);
+            btnEnter.Name = "btnEnter";
+            btnEnter.Size = new Size(138, 65);
+            btnEnter.TabIndex = 3;
+            btnEnter.Text = "確定(F1)";
+            btnEnter.UseVisualStyleBackColor = true;
+            btnEnter.Click += btnEnter_Click;
             // 
             // btnClose
             // 
-            btnClose.Location = new Point(209, 21);
+            btnClose.Location = new Point(358, 30);
             btnClose.Name = "btnClose";
-            btnClose.RightToLeft = RightToLeft.No;
-            btnClose.Size = new Size(136, 67);
-            btnClose.TabIndex = 7;
+            btnClose.Size = new Size(138, 65);
+            btnClose.TabIndex = 4;
             btnClose.Text = "閉じる(F10)";
             btnClose.UseVisualStyleBackColor = true;
             btnClose.Click += btnClose_Click;
-            btnClose.KeyDown += frmEdit_KeyDown;
             // 
-            // txtRem
+            // lblAdjuSum
             // 
-            txtRem.Location = new Point(110, 207);
-            txtRem.MaxLength = 200;
-            txtRem.Multiline = true;
-            txtRem.Name = "txtRem";
-            txtRem.Size = new Size(240, 53);
-            txtRem.TabIndex = 5;
-            txtRem.KeyDown += frmEdit_KeyDown;
+            lblAdjuSum.AutoSize = true;
+            lblAdjuSum.Location = new Point(12, 45);
+            lblAdjuSum.Name = "lblAdjuSum";
+            lblAdjuSum.Size = new Size(54, 20);
+            lblAdjuSum.TabIndex = 5;
+            lblAdjuSum.Text = "調整数";
             // 
-            // lblEquipID
+            // lblAdjuUnder
             // 
-            lblEquipID.AutoSize = true;
-            lblEquipID.Location = new Point(50, 78);
-            lblEquipID.Name = "lblEquipID";
-            lblEquipID.Size = new Size(54, 20);
-            lblEquipID.TabIndex = 8;
-            lblEquipID.Text = "備品ID";
-            // 
-            // lblEquipName
-            // 
-            lblEquipName.AutoSize = true;
-            lblEquipName.Location = new Point(50, 111);
-            lblEquipName.Name = "lblEquipName";
-            lblEquipName.Size = new Size(54, 20);
-            lblEquipName.TabIndex = 9;
-            lblEquipName.Text = "備品名";
-            // 
-            // lblCategory
-            // 
-            lblCategory.AutoSize = true;
-            lblCategory.Location = new Point(52, 30);
-            lblCategory.Name = "lblCategory";
-            lblCategory.Size = new Size(52, 20);
-            lblCategory.TabIndex = 10;
-            lblCategory.Text = "カテゴリ";
-            // 
-            // lblEquipSum
-            // 
-            lblEquipSum.AutoSize = true;
-            lblEquipSum.Location = new Point(50, 144);
-            lblEquipSum.Name = "lblEquipSum";
-            lblEquipSum.Size = new Size(54, 20);
-            lblEquipSum.TabIndex = 11;
-            lblEquipSum.Text = "在庫数";
-            // 
-            // lblEquipFrom
-            // 
-            lblEquipFrom.AutoSize = true;
-            lblEquipFrom.Location = new Point(35, 177);
-            lblEquipFrom.Name = "lblEquipFrom";
-            lblEquipFrom.Size = new Size(69, 20);
-            lblEquipFrom.TabIndex = 12;
-            lblEquipFrom.Text = "保管場所";
-            // 
-            // lblRem
-            // 
-            lblRem.AutoSize = true;
-            lblRem.Location = new Point(65, 210);
-            lblRem.Name = "lblRem";
-            lblRem.Size = new Size(39, 20);
-            lblRem.TabIndex = 13;
-            lblRem.Text = "備考";
-            // 
-            // txtEquipId
-            // 
-            txtEquipId.Location = new Point(110, 75);
-            txtEquipId.Mask = "\\E\\Q0000";
-            txtEquipId.Name = "txtEquipId";
-            txtEquipId.PromptChar = ' ';
-            txtEquipId.Size = new Size(125, 27);
-            txtEquipId.TabIndex = 1;
-            txtEquipId.Enter += txtEquipId_Enter;
-            txtEquipId.KeyDown += txtEquipId_KeyDown;
-            txtEquipId.KeyPress += txtEquipId_KeyPress;
-            txtEquipId.Validating += txtEquipId_Validating;
+            lblAdjuUnder.AutoSize = true;
+            lblAdjuUnder.Location = new Point(181, 45);
+            lblAdjuUnder.Name = "lblAdjuUnder";
+            lblAdjuUnder.Size = new Size(69, 20);
+            lblAdjuUnder.TabIndex = 6;
+            lblAdjuUnder.Text = "調整理由";
             // 
             // grpTop
             // 
-            grpTop.Controls.Add(txtRem);
-            grpTop.Controls.Add(txtEquipId);
-            grpTop.Controls.Add(txtEquipName);
-            grpTop.Controls.Add(lblRem);
-            grpTop.Controls.Add(txtEquipSum);
-            grpTop.Controls.Add(lblEquipFrom);
-            grpTop.Controls.Add(txtEquipFrom);
-            grpTop.Controls.Add(lblEquipSum);
-            grpTop.Controls.Add(cmbCategory);
-            grpTop.Controls.Add(lblCategory);
-            grpTop.Controls.Add(lblEquipID);
-            grpTop.Controls.Add(lblEquipName);
-            grpTop.Location = new Point(12, 12);
+            grpTop.Controls.Add(cmbAdjuUnder);
+            grpTop.Controls.Add(txtAdjuSum);
+            grpTop.Controls.Add(lblAdjuUnder);
+            grpTop.Controls.Add(lblAdjuSum);
+            grpTop.Location = new Point(270, 12);
             grpTop.Name = "grpTop";
-            grpTop.Size = new Size(380, 279);
-            grpTop.TabIndex = 8;
+            grpTop.Size = new Size(338, 155);
+            grpTop.TabIndex = 7;
             grpTop.TabStop = false;
             // 
             // grpBottom
             // 
-            grpBottom.Controls.Add(btnSave);
+            grpBottom.Controls.Add(btnEnter);
             grpBottom.Controls.Add(btnClose);
-            grpBottom.Location = new Point(12, 297);
+            grpBottom.Location = new Point(13, 173);
             grpBottom.Name = "grpBottom";
-            grpBottom.Size = new Size(380, 97);
-            grpBottom.TabIndex = 9;
+            grpBottom.Size = new Size(595, 117);
+            grpBottom.TabIndex = 8;
             grpBottom.TabStop = false;
             // 
-            // frmEdit
+            // lbl1
+            // 
+            lbl1.AutoSize = true;
+            lbl1.Location = new Point(53, 29);
+            lbl1.Name = "lbl1";
+            lbl1.Size = new Size(54, 20);
+            lbl1.TabIndex = 9;
+            lbl1.Text = "備品ID";
+            // 
+            // txtEquipId
+            // 
+            txtEquipId.Location = new Point(113, 26);
+            txtEquipId.Name = "txtEquipId";
+            txtEquipId.ReadOnly = true;
+            txtEquipId.Size = new Size(125, 27);
+            txtEquipId.TabIndex = 10;
+            txtEquipId.TabStop = false;
+            // 
+            // lbl2
+            // 
+            lbl2.AutoSize = true;
+            lbl2.Location = new Point(53, 72);
+            lbl2.Name = "lbl2";
+            lbl2.Size = new Size(54, 20);
+            lbl2.TabIndex = 11;
+            lbl2.Text = "備品名";
+            // 
+            // txtEquipName
+            // 
+            txtEquipName.Location = new Point(113, 69);
+            txtEquipName.Name = "txtEquipName";
+            txtEquipName.ReadOnly = true;
+            txtEquipName.Size = new Size(125, 27);
+            txtEquipName.TabIndex = 12;
+            txtEquipName.TabStop = false;
+            // 
+            // lbl3
+            // 
+            lbl3.AutoSize = true;
+            lbl3.Location = new Point(11, 116);
+            lbl3.Name = "lbl3";
+            lbl3.Size = new Size(96, 20);
+            lbl3.TabIndex = 13;
+            lbl3.Text = "現在の在庫数";
+            // 
+            // txtCurrentStock
+            // 
+            txtCurrentStock.Location = new Point(113, 113);
+            txtCurrentStock.Name = "txtCurrentStock";
+            txtCurrentStock.ReadOnly = true;
+            txtCurrentStock.Size = new Size(125, 27);
+            txtCurrentStock.TabIndex = 14;
+            txtCurrentStock.TabStop = false;
+            // 
+            // grpinfo
+            // 
+            grpinfo.Controls.Add(lbl1);
+            grpinfo.Controls.Add(txtEquipId);
+            grpinfo.Controls.Add(txtEquipName);
+            grpinfo.Controls.Add(txtCurrentStock);
+            grpinfo.Controls.Add(lbl2);
+            grpinfo.Controls.Add(lbl3);
+            grpinfo.Location = new Point(13, 12);
+            grpinfo.Name = "grpinfo";
+            grpinfo.Size = new Size(251, 155);
+            grpinfo.TabIndex = 15;
+            grpinfo.TabStop = false;
+            // 
+            // Adju
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(404, 406);
+            ClientSize = new Size(618, 304);
+            Controls.Add(grpinfo);
             Controls.Add(grpBottom);
             Controls.Add(grpTop);
-            Name = "frmEdit";
+            KeyPreview = true;
+            Name = "Adju";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "備品登録・編集画面";
-            Activated += frmEdit_Activated;
-            Load += frmEdit_Load;
-            KeyDown += frmEdit_KeyDown;
+            Text = "在庫調整画面";
+            Load += Adju_Load;
+            KeyDown += Adju_KeyDown;
             grpTop.ResumeLayout(false);
             grpTop.PerformLayout();
             grpBottom.ResumeLayout(false);
+            grpinfo.ResumeLayout(false);
+            grpinfo.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
-        private TextBox txtEquipName;
-        private TextBox txtEquipSum;
-        private TextBox txtEquipFrom;
-        private ComboBox cmbCategory;
-        private Button btnSave;
+        private TextBox txtAdjuSum;
+        private ComboBox cmbAdjuUnder;
+        private Button btnEnter;
         private Button btnClose;
-        private TextBox txtRem;
-        private Label lblEquipID;
-        private Label lblEquipName;
-        private Label lblCategory;
-        private Label lblEquipSum;
-        private Label lblEquipFrom;
-        private Label lblRem;
-        private MaskedTextBox txtEquipId;
+        private Label lblAdjuSum;
+        private Label lblAdjuUnder;
         private GroupBox grpTop;
         private GroupBox grpBottom;
+        private Label lbl1;
+        private TextBox txtEquipId;
+        private Label lbl2;
+        private TextBox txtEquipName;
+        private Label lbl3;
+        private TextBox txtCurrentStock;
+        private GroupBox grpinfo;
     }
 }
