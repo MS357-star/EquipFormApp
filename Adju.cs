@@ -167,32 +167,65 @@ namespace EquipFormApp
 
         private void txtAdjuSum_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == ' ' || e.KeyChar == '　')
+            // 1. スペースは弾く
+            if (e.KeyChar == ' ' || e.KeyChar == ' ')
             {
                 e.Handled = true;
                 return;
             }
 
+            // 2. コンボボックスが「払い出し」の時だけ、マイナス記号の入力を許可する
+            string mode = cmbAdjuUnder.SelectedItem?.ToString() ?? "";
+            if (mode == "払い出し")
+            {
+                // 半角マイナス '-' と、全角マイナス '－' の入力を許可（スルーさせる）
+                if (e.KeyChar == '-' || e.KeyChar == '－')
+                {
+                    return;
+                }
+            }
+
+            // 3. 数字と制御文字（BackSpace等）以外は弾く
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
-                e.Handled = true; 
+                e.Handled = true;
             }
         }
 
         private void txtAdjuSum_Leave(object sender, EventArgs e)
         {
+
             if (!string.IsNullOrWhiteSpace(txtAdjuSum.Text))
             {
                 string inputText = txtAdjuSum.Text;
 
-                string[] zenkaku = { "０", "１", "２", "３", "４", "５", "６", "７", "８", "９" };
-                string[] hankaku = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+                // ★全角マイナス「－」や長音「ー」も半角マイナス「-」に変換できるように配列に追加
+                string[] zenkaku = { "０", "１", "２", "３", "４", "５", "６", "７", "８", "９", "－", "ー" };
+                string[] hankaku = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "-" };
 
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < zenkaku.Length; i++)
                 {
                     inputText = inputText.Replace(zenkaku[i], hankaku[i]);
                 }
-                string rawSum = inputText.Replace(",", "").Replace(" ", "").Replace("　", "");
+
+                string rawSum = inputText.Replace(",", "").Replace(" ", "").Replace(" ", "");
+
+                // ★【追加】もし「補充」モードなのにコピペ等でマイナスが入っていたら、強制的に消し去る
+                string mode = cmbAdjuUnder.SelectedItem?.ToString() ?? "";
+                if (mode == "払い出し")
+                {
+                    // ★払い出しの時：文字が空じゃなくて、マイナスが先頭についていなければ付ける
+                    // （ユーザーが最初から「-150」と打ってくれていた場合はそのまま）
+                    if (rawSum.Length > 0 && !rawSum.StartsWith("-"))
+                    {
+                        rawSum = "-" + rawSum;
+                    }
+                }
+                else
+                {
+                    // ★補充の時：マイナスが入ってしまっていたら強制的に消す
+                    rawSum = rawSum.Replace("-", "");
+                }
 
                 if (int.TryParse(rawSum, out int m))
                 {
