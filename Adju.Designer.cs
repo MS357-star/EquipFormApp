@@ -69,7 +69,7 @@ namespace EquipFormApp
             // 
             // btnEnter
             // 
-            btnEnter.Location = new Point(100, 36);
+            btnEnter.Location = new Point(100, 30);
             btnEnter.Name = "btnEnter";
             btnEnter.Size = new Size(138, 65);
             btnEnter.TabIndex = 3;
@@ -79,7 +79,7 @@ namespace EquipFormApp
             // 
             // btnClose
             // 
-            btnClose.Location = new Point(358, 36);
+            btnClose.Location = new Point(358, 30);
             btnClose.Name = "btnClose";
             btnClose.Size = new Size(138, 65);
             btnClose.TabIndex = 4;
