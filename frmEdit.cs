@@ -1,121 +1,136 @@
 using Microsoft.Data.SqlClient;
 using System;
-using System.Drawing;
+using System.Data;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace EquipFormApp
 {
-    public partial class Adju : Form
+    public partial class frmEdit : Form
     {
+
         private readonly string connectionString = "Data Source=192.168.3.19;Initial Catalog=Times26;User ID=JouhouGiken;Password=System26;TrustServerCertificate=True";
 
+        // ★変更点1：メイン画面から全部のデータを受け取るための「ポケット」を増やす
         public string SelectedEquipmentId { get; set; }
         public string SelectedEquipmentName { get; set; }
+        public string SelectedCategoryName { get; set; }
         public string SelectedQuantity { get; set; }
+        public string SelectedLocation { get; set; }
+        public string SelectedNote { get; set; }
 
-        public Adju()
+        public frmEdit()
         {
             InitializeComponent();
         }
 
-        private void Adju_Load(object sender, EventArgs e)
+        private void frmEdit_Load(object sender, EventArgs e)
         {
-            // DataGridViewの処理を削除し、テキストボックスに値をセットする処理に変更
-            txtEquipId.Text = SelectedEquipmentId;
-            txtEquipId.ReadOnly = true;
-            txtEquipId.BackColor = Color.WhiteSmoke;
+            LoadCategoryCombo();
 
-            txtEquipName.Text = SelectedEquipmentName;
-            txtEquipName.ReadOnly = true;
-            txtEquipName.BackColor = Color.WhiteSmoke;
-
-            // 在庫数を見やすくカンマ区切りにして表示（元のデータにカンマが無い場合を考慮）
-            if (int.TryParse(SelectedQuantity.Replace(",", ""), out int currentQty))
+            if (string.IsNullOrEmpty(SelectedEquipmentId))
             {
-                txtCurrentStock.Text = currentQty.ToString("#,##0");
+                if (cmbCategory.Items.Count > 0)
+                {
+                    cmbCategory.SelectedIndex = 0;
+                }
             }
             else
             {
-                txtCurrentStock.Text = SelectedQuantity;
-            }
-            txtCurrentStock.ReadOnly = true;
-            txtCurrentStock.BackColor = Color.WhiteSmoke;
 
-            // コンボボックスの初期設定
-            cmbAdjuUnder.Items.Clear();
-            cmbAdjuUnder.Items.Add("払い出し");
-            cmbAdjuUnder.Items.Add("補充");
-            cmbAdjuUnder.SelectedIndex = 0;
-            cmbAdjuUnder.DropDownStyle = ComboBoxStyle.DropDownList;
+                txtEquipId.Text = SelectedEquipmentId;
+                txtEquipId.Enabled = false;
+
+                txtEquipName.Text = SelectedEquipmentName;
+                cmbCategory.Text = SelectedCategoryName;
+                txtEquipSum.Text = SelectedQuantity;
+                txtEquipFrom.Text = SelectedLocation;
+                txtRem.Text = SelectedNote;
+            }
+
         }
 
-        // 「閉じる」ボタンが押された時の処理
-        private void btnClose_Click(object sender, EventArgs e)
+        private void LoadCategoryCombo()
         {
-            this.Close();
+            string sql = "SELECT CategoryCode, CategoryName FROM M_Category ORDER BY CategoryCode";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            adapter.Fill(dt);
+
+                            cmbCategory.DataSource = dt;
+                            cmbCategory.DisplayMember = "CategoryName";
+                            cmbCategory.ValueMember = "CategoryCode";
+                            cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"カテゴリの読み込みに失敗しました。\n{ex.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void btnEnter_Click(object sender, EventArgs e)
+
+        //保存
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            txtAdjuSum.Text = txtAdjuSum.Text.Trim();
+            txtEquipId.Text = txtEquipId.Text.Trim();
+            txtEquipName.Text = txtEquipName.Text.Trim();
+            cmbCategory.Text = cmbCategory.Text.Trim();
+            txtEquipSum.Text = txtEquipSum.Text.Trim();
 
-            // 必須入力チェック
-            if (string.IsNullOrWhiteSpace(txtAdjuSum.Text))
+
+            // 備品IDのチェック
+            if (string.IsNullOrWhiteSpace(txtEquipId.Text))
             {
-                MessageBox.Show("調整数を入力してください。", "入力確認", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtAdjuSum.Focus();
+                MessageBox.Show("備品IDを入力してください。", "入力確認", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEquipId.Focus();
+                return;
+            }
+            if (!System.Text.RegularExpressions.Regex.IsMatch(txtEquipId.Text, @"^[a-zA-Z0-9]{6}$"))
+            {
+                MessageBox.Show("備品IDは半角英数字6桁で入力してください。（例：EQ0001）", "入力エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEquipId.Focus();
                 return;
             }
 
-            // 入力された文字が数字かチェック
-            if (!int.TryParse(txtAdjuSum.Text.Replace(",", ""), out int adjustNum))
+            // 備品名のチェック
+            if (string.IsNullOrWhiteSpace(txtEquipName.Text))
             {
-                MessageBox.Show("調整数には半角数字（整数）を入力してください。", "入力エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtAdjuSum.Focus();
+                MessageBox.Show("備品名を入力してください。", "入力確認", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEquipName.Focus();
                 return;
             }
 
-            // 入力された数字を「絶対値（プラス）」にする
-            int absAdjustNum = Math.Abs(adjustNum);
-
-            int currentStock = int.Parse(SelectedQuantity.Replace(",", ""));
-            int afterStock = 0;
-
-            string mode = cmbAdjuUnder.SelectedItem?.ToString() ?? "";
-
-            if (mode == "払い出し")
+            // カテゴリのチェック
+            if (string.IsNullOrWhiteSpace(cmbCategory.Text))
             {
-                afterStock = currentStock - absAdjustNum;
-            }
-            else if (mode == "補充")
-            {
-                afterStock = currentStock + absAdjustNum;
-            }
-            else
-            {
-                MessageBox.Show("払い出し、または補充を選択してください。", "選択エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("カテゴリを入力（選択）してください。", "入力確認", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cmbCategory.Focus();
                 return;
             }
 
-            // 在庫割れチェック
-            if (afterStock < 0)
+            // 在庫数のチェック
+            if (string.IsNullOrWhiteSpace(txtEquipSum.Text))
             {
-                MessageBox.Show($"在庫不足です。\n現在の在庫数（{currentStock}）に対して、払い出し数（{absAdjustNum}）が多すぎるため、処理を中断します。", "在庫エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtAdjuSum.Focus();
+                MessageBox.Show("在庫数を入力してください。", "入力確認", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEquipSum.Focus();
                 return;
             }
-
-            // 上限オーバーチェック
-            if (afterStock > 99999)
+            if (!int.TryParse(txtEquipSum.Text.Replace(",", ""), out int parsedQuantity) || parsedQuantity < 0)
             {
-                MessageBox.Show($"在庫数の上限オーバーです。\n補充後の合計が5桁（99,999）を超えることはできません。\n（現在の在庫数：{currentStock}）", "入力エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtAdjuSum.Focus();
-                return;
-            }
-
-            // 最終確認
-            if (MessageBox.Show($"{mode}処理を確定してもよろしいですか？\n（調整後の在庫数：{afterStock}）", "確定確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
-            {
+                MessageBox.Show("在庫数には 0 以上の半角数字を入力してください。", "入力エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtEquipSum.Focus();
                 return;
             }
 
@@ -125,38 +140,86 @@ namespace EquipFormApp
                 {
                     conn.Open();
 
-                    using (SqlTransaction tx = conn.BeginTransaction())
+                    string executeSql = "";
+                    string successMessage = "";
+
+
+                    string categoryCode = cmbCategory.SelectedValue?.ToString() ?? "";
+
+                    string safeEquipId = txtEquipId.Text.Replace("'", "''");
+                    string safeEquipName = txtEquipName.Text.Replace("'", "''");
+                    string safeCategoryCode = categoryCode.Replace("'", "''");
+                    string safeLocation = txtEquipFrom.Text.Replace("'", "''");
+                    string safeNote = txtRem.Text.Replace("'", "''");
+
+                    // ポケットが空っぽなら「新規モード」
+                    if (string.IsNullOrEmpty(SelectedEquipmentId))
                     {
-                        try
+                        // 重複チェックも直接埋め込み
+                        string checkSql = $"SELECT COUNT(1) FROM M_Equipment WHERE EquipmentId = '{safeEquipId}'";
+                        int count = 0;
+
+                        using (SqlCommand checkCmd = new SqlCommand(checkSql, conn))
                         {
-                            string safeEquipId = SelectedEquipmentId.Replace("'", "''");
-
-                            // M_Equipmentの在庫数を更新するSQL
-                            string updateSql = $@"
-                        UPDATE M_Equipment 
-                        SET Quantity = {afterStock}, 
-                            UpdatedAt = GETDATE() 
-                        WHERE EquipmentId = '{safeEquipId}'
-                    ";
-
-                            using (SqlCommand cmd = new SqlCommand(updateSql, conn, tx))
-                            {
-                                cmd.ExecuteNonQuery();
-                            }
-
-                            tx.Commit();
-
-                            MessageBox.Show($"在庫調整が完了しました。\n新しい在庫数は {afterStock} です。", "完了", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                            this.DialogResult = DialogResult.OK;
-                            this.Close();
+                            count = (int)checkCmd.ExecuteScalar();
                         }
-                        catch (Exception innerEx)
+
+                        if (count > 0)
                         {
-                            tx.Rollback();
-                            throw new Exception("データベースの更新中にエラーが発生したため、処理を取り消しました。\n" + innerEx.Message);
+                            MessageBox.Show("入力された備品IDは既に登録されています。\n別のIDを入力してください。", "重複エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            txtEquipId.Focus();
+                            return;
                         }
+
+                        if (MessageBox.Show("登録してもよろしいですか？", "登録確認", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                        {
+                            return;
+                        }
+
+                        executeSql = $@"
+                        INSERT INTO M_Equipment (EquipmentId, EquipmentName, CategoryCode, Quantity, Location, Note, UpdatedAt) 
+                        VALUES (
+                        '{safeEquipId}', 
+                        N'{safeEquipName}', 
+                        '{safeCategoryCode}', 
+                        {parsedQuantity}, 
+                        N'{safeLocation}', 
+                        N'{safeNote}', 
+                        GETDATE()
+                        )";
+
+                        successMessage = "登録しました。";
                     }
+                    else // 「更新（編集）モード」
+                    {
+                        if (MessageBox.Show("更新してよろしいですか？", "更新確認", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                        {
+                            return;
+                        }
+
+                        executeSql = $@"
+                        UPDATE M_Equipment SET 
+                        EquipmentName = N'{safeEquipName}', 
+                        CategoryCode = '{safeCategoryCode}', 
+                        Quantity = {parsedQuantity}, 
+                        Location = N'{safeLocation}', 
+                        Note = N'{safeNote}', 
+                        UpdatedAt = GETDATE() 
+                        WHERE EquipmentId = '{safeEquipId}'
+                        ";
+
+                        successMessage = "更新しました。";
+                    }
+
+                    using (SqlCommand cmd = new SqlCommand(executeSql, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    MessageBox.Show(successMessage, "完了", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
                 }
             }
             catch (Exception ex)
@@ -165,88 +228,144 @@ namespace EquipFormApp
             }
         }
 
-        private void txtAdjuSum_KeyPress(object sender, KeyPressEventArgs e)
+        private void btnClose_Click(object sender, EventArgs e)
         {
-            // 1. スペースは弾く
-            if (e.KeyChar == ' ' || e.KeyChar == ' ')
-            {
-                e.Handled = true;
-                return;
-            }
+            this.Close();
+        }
 
-            // 2. コンボボックスが「払い出し」の時だけ、マイナス記号の入力を許可する
-            string mode = cmbAdjuUnder.SelectedItem?.ToString() ?? "";
-            if (mode == "払い出し")
+        //カンマ
+        private void txtEquipSum_Leave(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtEquipSum.Text))
             {
-                // 半角マイナス '-' と、全角マイナス '－' の入力を許可（スルーさせる）
-                if (e.KeyChar == '-' || e.KeyChar == '－')
+                string rawSum = txtEquipSum.Text.Replace(",", "");
+                if (int.TryParse(rawSum, out int m))
                 {
-                    return;
+                    txtEquipSum.Text = m.ToString("#,##0");
                 }
             }
+        }
 
-            // 3. 数字と制御文字（BackSpace等）以外は弾く
+        private void txtEquipSum_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // 0～9の数字以外の入力を無視する
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
         }
 
-        private void txtAdjuSum_Leave(object sender, EventArgs e)
+        private void txtEquipSum_TextChanged(object objSender, EventArgs e)
         {
+            TextBox tb = (TextBox)objSender;
 
-            if (!string.IsNullOrWhiteSpace(txtAdjuSum.Text))
+            string rawText = Microsoft.VisualBasic.Strings.StrConv(tb.Text, Microsoft.VisualBasic.VbStrConv.Narrow, 0);
+
+            string raw = rawText.Replace(",", "");
+
+            if (long.TryParse(raw, out long value))
             {
-                string inputText = txtAdjuSum.Text;
+                int sel = tb.SelectionStart;
+                int oldLength = tb.Text.Length;
 
-                // ★全角マイナス「－」や長音「ー」も半角マイナス「-」に変換できるように配列に追加
-                string[] zenkaku = { "０", "１", "２", "３", "４", "５", "６", "７", "８", "９", "－", "ー" };
-                string[] hankaku = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "-" };
+                tb.Text = value.ToString("#,0");
 
-                for (int i = 0; i < zenkaku.Length; i++)
-                {
-                    inputText = inputText.Replace(zenkaku[i], hankaku[i]);
-                }
+                int newLength = tb.Text.Length;
+                int diff = newLength - oldLength;
 
-                string rawSum = inputText.Replace(",", "").Replace(" ", "").Replace(" ", "");
-
-                // ★【追加】もし「補充」モードなのにコピペ等でマイナスが入っていたら、強制的に消し去る
-                string mode = cmbAdjuUnder.SelectedItem?.ToString() ?? "";
-                if (mode == "払い出し")
-                {
-                    // ★払い出しの時：文字が空じゃなくて、マイナスが先頭についていなければ付ける
-                    // （ユーザーが最初から「-150」と打ってくれていた場合はそのまま）
-                    if (rawSum.Length > 0 && !rawSum.StartsWith("-"))
-                    {
-                        rawSum = "-" + rawSum;
-                    }
-                }
-                else
-                {
-                    // ★補充の時：マイナスが入ってしまっていたら強制的に消す
-                    rawSum = rawSum.Replace("-", "");
-                }
-
-                if (int.TryParse(rawSum, out int m))
-                {
-                    txtAdjuSum.Text = m.ToString("#,##0");
-                }
+                tb.SelectionStart = Math.Max(0, sel + diff);
+            }
+            else if (string.IsNullOrEmpty(raw))
+            {
+                tb.Text = "";
             }
         }
 
-        private void Adju_KeyDown(object sender, KeyEventArgs e)
+        private void txtEquipId_Enter(object sender, EventArgs e)
         {
-            if (e.KeyCode == Keys.F1)
+            // 非同期（BeginInvoke）を使って、フォーカス移動が完全に終わった後にカーソル位置を動かす
+            this.BeginInvoke(new Action(() =>
             {
-                btnEnter.PerformClick();
+                string currentText = txtEquipId.Text.Replace(" ", "").Trim();
+
+                if (currentText == "EQ")
+                {
+                    txtEquipId.SelectionStart = 2;
+                }
+                {
+                    txtEquipId.SelectionStart = txtEquipId.Text.Trim().Length;
+                }
+            }));
+        }
+
+        private void txtEquipId_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar >= '０' && e.KeyChar <= '９')
+            {
+                e.Handled = true;
+                return;
+            }
+            // 0～9の数字以外の入力を無視する
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtEquipId_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                e.SuppressKeyPress = true;
             }
 
+            if (e.KeyCode == Keys.F1) btnSave.PerformClick();
+            if (e.KeyCode == Keys.F10)
+            {
+                btnClose.PerformClick();
+                SendKeys.Send("A");
+                e.Handled = true;
+            }
+        }
+
+        private void frmEdit_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F1) btnSave.PerformClick();
             if (e.KeyCode == Keys.F10)
             {
                 btnClose.PerformClick();
                 SendKeys.Send("Tab");
                 e.Handled = true;
             }
+        }
+
+        /*
+        private void txtEquipId_TextChanged(object objSender, EventArgs e)
+        {
+            Regex regex = new Regex("^[EQ0-9]*$"); // 半角数字の正規表現
+            if (!regex.IsMatch(txtEquipId.Text)) // 入力が正規表現にマッチしない場合
+            {
+                MessageBox.Show("半角数字のみを入力してください。"); // エラーメッセージを表示
+                txtEquipId.Text = ""; // 入力をクリア
+            }
+        }
+        */
+
+        private void txtEquipId_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Regex regex = new Regex("^[EQ0-9]*$");
+
+            if (!regex.IsMatch(txtEquipId.Text))
+            {
+                MessageBox.Show("半角英数字(EQ + 数字)のみを入力してください。");
+                txtEquipId.Text = ""; // 入力をクリア
+                e.Cancel = true; // フォーカス移動をキャンセル
+            }
+        }
+
+        private void frmEdit_Activated(object sender, EventArgs e)
+        {
+            cmbCategory.Focus();
         }
     }
 }
