@@ -75,6 +75,13 @@ namespace EquipFormApp
                 return;
             }
 
+            if (adjustNum == 0)
+            {
+                MessageBox.Show("調整数に 0 を入力することはできません。\n1 以上の数量を指定してください。", "入力確認", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtAdjuSum.Focus();
+                return; // ここで処理を中断して画面に戻す
+            }
+            
             // 入力された数字を「絶対値（プラス）」にする
             int absAdjustNum = Math.Abs(adjustNum);
 
@@ -184,6 +191,21 @@ namespace EquipFormApp
                     return;
                 }
             }
+            else
+            {
+                // ★ここを追加：補充モードの時は、マイナス記号が押されたらその場で弾く！
+                if (e.KeyChar == '-' || e.KeyChar == '－')
+                {
+                    e.Handled = true;
+                    return;
+                }
+            }
+
+            if (txtAdjuSum.Text.Length == 0 && e.KeyChar == '0')
+            {
+                e.Handled = true; // 入力をなかったことにする
+                return;
+            }
 
             // 3. 数字と制御文字（BackSpace等）以外は弾く
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
@@ -246,6 +268,17 @@ namespace EquipFormApp
                 btnClose.PerformClick();
                 SendKeys.Send("Tab");
                 e.Handled = true;
+            }
+        }
+
+        private void cmbAdjuUnder_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtAdjuSum.Focus();
+            // 「補充」モードなのに、テキストボックスの文字にマイナスが含まれていたら消す！
+            if (cmbAdjuUnder.Text == "補充" && txtAdjuSum.Text.Contains("-"))
+            {
+                // マイナス記号（半角・全角）をすべて空文字 "" に置き換えて、テキストボックスに入れ直す
+                txtAdjuSum.Text = txtAdjuSum.Text.Replace("-", "").Replace("－", "");
             }
         }
     }
