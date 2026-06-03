@@ -254,15 +254,10 @@ namespace EquipFormApp
             if (IsDuplicateCode(txtCateCode))
             {
                 MessageBox.Show("このカテゴリコードは既に登録されています。");
-                txtCateCode.Clear();
                 return;
             }
 
-            if (IsDuplicateName(tbCateName))
-            {
-                tbCateName.Clear();
-                return;
-            }
+            if (IsDuplicateName(tbCateName)) return;
 
             DialogResult result = MessageBox.Show("登録してよろしいですか？", "確認", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (result != DialogResult.OK) return;
@@ -304,11 +299,7 @@ namespace EquipFormApp
 
 
 
-            if (IsDuplicateName(txtCateName))
-            {
-                txtCateName.Clear();
-                return;
-            }
+            if (IsDuplicateName(txtCateName)) return;
 
             DialogResult result = MessageBox.Show("更新してよろしいですか？", "確認", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
             if (result != DialogResult.OK) return;
