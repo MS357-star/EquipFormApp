@@ -296,6 +296,8 @@ namespace EquipFormApp
                     txtEquipId.SelectionStart = txtEquipId.Text.Trim().Length;
                 }
             }));
+
+            txtEquipId.BeginInvoke(new Action(() => txtEquipId.Select(2, 6)));
         }
 
         private void txtEquipId_KeyPress(object sender, KeyPressEventArgs e)
@@ -323,7 +325,7 @@ namespace EquipFormApp
             if (e.KeyCode == Keys.F10)
             {
                 btnClose.PerformClick();
-                SendKeys.Send("A");
+                SendKeys.Send("");
                 e.Handled = true;
             }
         }
@@ -334,7 +336,7 @@ namespace EquipFormApp
             if (e.KeyCode == Keys.F10)
             {
                 btnClose.PerformClick();
-                SendKeys.Send("Tab");
+                SendKeys.Send("");
                 e.Handled = true;
             }
         }
