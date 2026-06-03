@@ -72,7 +72,7 @@ namespace EquipFormApp
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvCategory.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvCategory.RowHeadersWidth = 51;
-            dgvCategory.Size = new Size(420, 248);
+            dgvCategory.Size = new Size(420, 410);
             dgvCategory.TabIndex = 7;
             dgvCategory.TabStop = false;
             dgvCategory.CellClick += dgvCategory_CellClick;
@@ -81,18 +81,19 @@ namespace EquipFormApp
             // 
             // txtCateCode
             // 
-            txtCateCode.Location = new Point(12, 78);
+            txtCateCode.Location = new Point(12, 157);
             txtCateCode.MaxLength = 3;
             txtCateCode.Name = "txtCateCode";
             txtCateCode.Size = new Size(150, 27);
             txtCateCode.TabIndex = 1;
             txtCateCode.TextChanged += txtCateCode_TextChanged;
             txtCateCode.KeyDown += txtCateCode_KeyDown;
+            txtCateCode.KeyPress += txtCateCode_KeyPress;
             txtCateCode.Leave += txtCateCode_Leave;
             // 
             // txtCateName
             // 
-            txtCateName.Location = new Point(12, 159);
+            txtCateName.Location = new Point(12, 269);
             txtCateName.MaxLength = 20;
             txtCateName.Name = "txtCateName";
             txtCateName.Size = new Size(150, 27);
@@ -146,7 +147,7 @@ namespace EquipFormApp
             // lblCateCode
             // 
             lblCateCode.AutoSize = true;
-            lblCateCode.Location = new Point(12, 55);
+            lblCateCode.Location = new Point(12, 134);
             lblCateCode.Name = "lblCateCode";
             lblCateCode.Size = new Size(83, 20);
             lblCateCode.TabIndex = 7;
@@ -155,7 +156,7 @@ namespace EquipFormApp
             // lblCateName
             // 
             lblCateName.AutoSize = true;
-            lblCateName.Location = new Point(12, 136);
+            lblCateName.Location = new Point(12, 246);
             lblCateName.Name = "lblCateName";
             lblCateName.Size = new Size(67, 20);
             lblCateName.TabIndex = 8;
@@ -167,7 +168,7 @@ namespace EquipFormApp
             grpBottom.Controls.Add(btnUpdate);
             grpBottom.Controls.Add(btnDelete);
             grpBottom.Controls.Add(btnClose);
-            grpBottom.Location = new Point(12, 266);
+            grpBottom.Location = new Point(12, 428);
             grpBottom.Name = "grpBottom";
             grpBottom.Size = new Size(597, 125);
             grpBottom.TabIndex = 9;
@@ -181,7 +182,7 @@ namespace EquipFormApp
             grpTop.Controls.Add(lblCateCode);
             grpTop.Location = new Point(438, 3);
             grpTop.Name = "grpTop";
-            grpTop.Size = new Size(171, 257);
+            grpTop.Size = new Size(171, 419);
             grpTop.TabIndex = 10;
             grpTop.TabStop = false;
             // 
@@ -189,7 +190,7 @@ namespace EquipFormApp
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(618, 395);
+            ClientSize = new Size(618, 565);
             Controls.Add(grpTop);
             Controls.Add(grpBottom);
             Controls.Add(dgvCategory);
