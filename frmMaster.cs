@@ -30,28 +30,28 @@ namespace EquipFormApp
         }
 
         // カテゴリコードの重複チェック
-        private bool IsDuplicateCode(string code)
+        private bool IsDuplicateCode(TextBox tb)
         {
             string esc(string v) => v?.Replace("'", "''") ?? "";
 
-            string sql = $"SELECT CategoryCode FROM M_Category WHERE CategoryCode = '{esc(code)}'";
-
+            string sql = $"SELECT CategoryCode FROM M_Category WHERE CategoryCode = '{esc(tb.Text)}'";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     object result = command.ExecuteScalar();
+                    tb.Focus();
                     return result != null;   // 何か返ってきたら重複
                 }
             }
         }
 
-        private bool IsDuplicateName(string strName)
+        private bool IsDuplicateName(TextBox tb)
         {
             string esc(string v) => v?.Replace("'", "''") ?? "";
 
-            string sql = $"SELECT CategoryName FROM M_Category WHERE CategoryName = '{esc(strName)}'";
+            string sql = $"SELECT CategoryName FROM M_Category WHERE CategoryName = '{esc(tb.Text)}'";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -59,6 +59,7 @@ namespace EquipFormApp
                 using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     object result = command.ExecuteScalar();
+                    tb.Focus();
                     return result != null;   // 何か返ってきたら重複
                 }
             }
@@ -139,15 +140,43 @@ namespace EquipFormApp
             // カラム数を指定
             dgvCategory.ColumnCount = 2;
 
+            dgvCategory.Columns[0].Name = "カテゴリコード";
+            dgvCategory.Columns[1].Name = "カテゴリ名";
+
             // カラム名を指定
             dgvCategory.Columns[0].HeaderText = "カテゴリコード";
             dgvCategory.Columns[1].HeaderText = "カテゴリ名";
 
-            dgvCategory.Columns[0].Width = 100;
-            dgvCategory.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgvCategory.Columns["カテゴリコード"].Width = 150;
+            dgvCategory.Columns["カテゴリ名"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             //カテゴリコードを中央に配置
-            dgvCategory.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvCategory.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            //カテゴリコードセンタリングデータ
+            dgvCategory.Columns["カテゴリコード"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            foreach (DataGridViewColumn col in dgvCategory.Columns)
+            {
+                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                string originalName = col.HeaderText.TrimStart();
+
+                // 列ごとにスペースの量を調整
+                switch (originalName)
+                {
+                    case "カテゴリコード":
+                        col.HeaderText = "     " + originalName;
+                        break;
+                    case "カテゴリ名":
+                        col.HeaderText = "     " + originalName;
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+
 
             dgvCategory.Rows.Clear();
             // 接続成功時の処理
@@ -170,7 +199,6 @@ namespace EquipFormApp
                                 string strName = reader["CategoryName"].ToString();
 
                                 dgvCategory.Rows.Add(strCode, strName);
-
 
                             }
                         }
@@ -198,12 +226,15 @@ namespace EquipFormApp
         // エスケープ関数（シングルクォートを二重化）
         string esc(string v) => v?.Replace("'", "''") ?? "";
 
+
         // 追加処理
         private void btnInsert_Click(object sender, EventArgs e)
         {
-            if (IsInvalid(txtCateCode, "カテゴリコード")) return;
-            if (IsInvalid(txtCateName, "カテゴリ名")) return;
 
+            TextBox tbCateName = txtCateName;
+
+            if (IsInvalid(txtCateCode, "カテゴリコード")) return;
+            if (IsInvalid(tbCateName, "カテゴリ名")) return;
 
             // 3桁チェック
             if (!IsThreeDigit(txtCateCode.Text))
@@ -213,17 +244,22 @@ namespace EquipFormApp
             }
 
             // 重複チェック
-            if (IsDuplicateCode(txtCateCode.Text))
+            if (IsDuplicateCode(txtCateCode))
             {
                 MessageBox.Show("このカテゴリコードは既に登録されています。");
+                txtCateCode.Clear();
                 return;
             }
 
-            if (IsDuplicateName(txtCateName.Text))
+            if (IsDuplicateName(tbCateName))
             {
                 MessageBox.Show("このカテゴリ名は既に登録されています。");
+                tbCateName.Clear();
                 return;
             }
+
+            DialogResult result = MessageBox.Show("登録してよろしいですか？", "確認", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if (result != DialogResult.OK) return;
 
             string sql = $@"INSERT INTO M_Category (CategoryCode, CategoryName) VALUES ('{esc(txtCateCode.Text)}', '{esc(txtCateName.Text)}')";
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -242,32 +278,35 @@ namespace EquipFormApp
         private void btnUpdate_Click(object sender, EventArgs e)
         {
 
-            string CateCode = txtCateCode.Text;
 
             if (IsInvalid(txtCateCode, "カテゴリコード")) return;
             if (IsInvalid(txtCateName, "カテゴリ名")) return;
 
-            // ★ ここで存在チェック
-            if (!IsDuplicateCode(CateCode))
-            {
-                MessageBox.Show("このカテゴリコードは登録されていません。");
-                return;
-            }
-
             // 3桁チェック
-            if (!IsThreeDigit(CateCode))
+            if (!IsThreeDigit(txtCateCode.Text))
             {
                 MessageBox.Show("コードは3桁の数字で入力してください。");
                 return;
             }
 
-            if (IsDuplicateName(txtCateName.Text))
+            // ★ ここで存在チェック
+            if (!IsDuplicateCode(txtCateCode))
             {
-                MessageBox.Show("このカテゴリ名は既に登録されています。");
+                MessageBox.Show("このカテゴリコードは登録されていません。");
                 return;
             }
 
 
+
+            if (IsDuplicateName(txtCateName))
+            {
+                MessageBox.Show("このカテゴリ名は既に登録されています。");
+                txtCateName.Clear();
+                return;
+            }
+
+            DialogResult result = MessageBox.Show("更新してよろしいですか？", "確認", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (result != DialogResult.OK) return;
 
             if (dgvCategory.CurrentRow == null) return;
             string code = dgvCategory.CurrentRow.Cells[0].Value.ToString();
