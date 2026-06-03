@@ -227,6 +227,20 @@ namespace EquipFormApp
 
                             dgvEquipCate.DataSource = dt;
                             SetGridDesign();
+                            if (dt.Rows.Count == 0)
+                            {
+                                MessageBox.Show("該当するものはありませんでした。", "検索結果", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                // 1. テキストボックスの文字だけをリセットする
+                                txtEquip.Clear();
+
+                                // 2. テキストボックスが空の状態で、もう一度この検索処理を実行する！
+                                // （これによって、コンボボックスの条件だけで自動的に再検索されます）
+                                btnSearch.PerformClick();
+
+                                // 3. 次に入力しやすいようにテキストボックスにカーソルを当てる
+                                txtEquip.Focus();
+                            }
                         }
                     }
                 }
@@ -327,7 +341,7 @@ namespace EquipFormApp
 
         private void frmMain_Activated(object sender, EventArgs e)
         {
-            btnInsert.Focus();
+            txtEquip.Focus();
         }
 
         private void frmMain_KeyDown(object sender, KeyEventArgs e)
@@ -356,6 +370,17 @@ namespace EquipFormApp
             {
                 btnSearch.PerformClick();
             }
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.F10)
+            {
+                // trueを返すことで「このキー操作はこちらで処理したから、OS側は何もしなくていいよ」と伝えます
+                return true;
+            }
+
+            // F10以外のキーは、通常通りの処理をそのまま行います
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }
