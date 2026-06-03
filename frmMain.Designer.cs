@@ -47,7 +47,7 @@ namespace EquipFormApp
             // 
             // btnInsert
             // 
-            btnInsert.Location = new Point(95, 15);
+            btnInsert.Location = new Point(82, 18);
             btnInsert.Name = "btnInsert";
             btnInsert.Size = new Size(169, 89);
             btnInsert.TabIndex = 1;
@@ -57,7 +57,7 @@ namespace EquipFormApp
             // 
             // btnSearch
             // 
-            btnSearch.Location = new Point(1072, 25);
+            btnSearch.Location = new Point(1072, 20);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(125, 66);
             btnSearch.TabIndex = 7;
@@ -68,14 +68,14 @@ namespace EquipFormApp
             // cmbCategory
             // 
             cmbCategory.FormattingEnabled = true;
-            cmbCategory.Location = new Point(892, 25);
+            cmbCategory.Location = new Point(892, 20);
             cmbCategory.Name = "cmbCategory";
             cmbCategory.Size = new Size(151, 28);
             cmbCategory.TabIndex = 5;
             // 
             // txtEquip
             // 
-            txtEquip.Location = new Point(892, 64);
+            txtEquip.Location = new Point(892, 59);
             txtEquip.MaxLength = 50;
             txtEquip.Name = "txtEquip";
             txtEquip.Size = new Size(151, 27);
@@ -84,7 +84,7 @@ namespace EquipFormApp
             // lblCategory
             // 
             lblCategory.AutoSize = true;
-            lblCategory.Location = new Point(791, 33);
+            lblCategory.Location = new Point(805, 28);
             lblCategory.Name = "lblCategory";
             lblCategory.Size = new Size(52, 20);
             lblCategory.TabIndex = 8;
@@ -93,7 +93,7 @@ namespace EquipFormApp
             // lblEquipName
             // 
             lblEquipName.AutoSize = true;
-            lblEquipName.Location = new Point(791, 71);
+            lblEquipName.Location = new Point(803, 66);
             lblEquipName.Name = "lblEquipName";
             lblEquipName.Size = new Size(54, 20);
             lblEquipName.TabIndex = 9;
@@ -103,20 +103,22 @@ namespace EquipFormApp
             // 
             dgvEquipCate.AllowUserToAddRows = false;
             dgvEquipCate.AllowUserToDeleteRows = false;
+            dgvEquipCate.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvEquipCate.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvEquipCate.BackgroundColor = Color.DarkGray;
             dgvEquipCate.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvEquipCate.Location = new Point(10, 115);
             dgvEquipCate.Name = "dgvEquipCate";
             dgvEquipCate.ReadOnly = true;
             dgvEquipCate.RowHeadersWidth = 51;
-            dgvEquipCate.Size = new Size(1205, 269);
+            dgvEquipCate.Size = new Size(1205, 502);
             dgvEquipCate.TabIndex = 10;
             dgvEquipCate.TabStop = false;
             dgvEquipCate.RowPostPaint += dgvList_RowPostPaint;
             // 
             // btnEdit
             // 
-            btnEdit.Location = new Point(387, 15);
+            btnEdit.Location = new Point(374, 18);
             btnEdit.Name = "btnEdit";
             btnEdit.Size = new Size(169, 89);
             btnEdit.TabIndex = 2;
@@ -126,7 +128,7 @@ namespace EquipFormApp
             // 
             // btnAdju
             // 
-            btnAdju.Location = new Point(679, 15);
+            btnAdju.Location = new Point(666, 18);
             btnAdju.Name = "btnAdju";
             btnAdju.Size = new Size(169, 89);
             btnAdju.TabIndex = 3;
@@ -136,7 +138,7 @@ namespace EquipFormApp
             // 
             // btnMaster
             // 
-            btnMaster.Location = new Point(971, 15);
+            btnMaster.Location = new Point(958, 18);
             btnMaster.Name = "btnMaster";
             btnMaster.Size = new Size(169, 89);
             btnMaster.TabIndex = 4;
@@ -150,9 +152,9 @@ namespace EquipFormApp
             grpBottom.Controls.Add(btnMaster);
             grpBottom.Controls.Add(btnEdit);
             grpBottom.Controls.Add(btnAdju);
-            grpBottom.Location = new Point(10, 390);
+            grpBottom.Location = new Point(10, 623);
             grpBottom.Name = "grpBottom";
-            grpBottom.Size = new Size(1205, 110);
+            grpBottom.Size = new Size(1205, 116);
             grpBottom.TabIndex = 14;
             grpBottom.TabStop = false;
             // 
@@ -173,10 +175,12 @@ namespace EquipFormApp
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1227, 508);
+            BackColor = SystemColors.Control;
+            ClientSize = new Size(1227, 750);
             Controls.Add(grpTop);
             Controls.Add(grpBottom);
             Controls.Add(dgvEquipCate);
+            ForeColor = Color.Black;
             KeyPreview = true;
             Name = "frmMain";
             StartPosition = FormStartPosition.CenterScreen;
