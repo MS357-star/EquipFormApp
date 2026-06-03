@@ -107,13 +107,14 @@ namespace EquipFormApp
             dgvEquipCate.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvEquipCate.BackgroundColor = Color.DarkGray;
             dgvEquipCate.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEquipCate.Location = new Point(10, 115);
+            dgvEquipCate.Location = new Point(12, 110);
             dgvEquipCate.Name = "dgvEquipCate";
             dgvEquipCate.ReadOnly = true;
             dgvEquipCate.RowHeadersWidth = 51;
-            dgvEquipCate.Size = new Size(1205, 502);
+            dgvEquipCate.Size = new Size(1203, 507);
             dgvEquipCate.TabIndex = 10;
             dgvEquipCate.TabStop = false;
+            dgvEquipCate.CellPainting += dgvEquipCate_CellPainting;
             dgvEquipCate.RowPostPaint += dgvList_RowPostPaint;
             // 
             // btnEdit
