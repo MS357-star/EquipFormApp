@@ -51,7 +51,7 @@ namespace EquipFormApp
         {
             string esc(string v) => v?.Replace("'", "''") ?? "";
 
-            string sql = $"SELECT CategoryName FROM M_Category WHERE CategoryName = '{esc(tb.Text)}'";
+            string sql = $"SELECT CategoryCode, CategoryName FROM M_Category WHERE CategoryName = '{esc(tb.Text)}'";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -60,6 +60,13 @@ namespace EquipFormApp
                 {
                     object result = command.ExecuteScalar();
                     tb.Focus();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            MessageBox.Show($"指定したカテゴリ名は既に''カテゴリコード：{reader["CategoryCode"].ToString()}''へ登録されています。");
+                        }
+                    }
                     return result != null;   // 何か返ってきたら重複
                 }
             }
@@ -253,7 +260,6 @@ namespace EquipFormApp
 
             if (IsDuplicateName(tbCateName))
             {
-                MessageBox.Show("このカテゴリ名は既に登録されています。");
                 tbCateName.Clear();
                 return;
             }
@@ -300,7 +306,6 @@ namespace EquipFormApp
 
             if (IsDuplicateName(txtCateName))
             {
-                MessageBox.Show("このカテゴリ名は既に登録されています。");
                 txtCateName.Clear();
                 return;
             }
@@ -382,11 +387,6 @@ namespace EquipFormApp
             if (e.KeyCode == Keys.F3) btnUpdate.PerformClick();
             if (e.KeyCode == Keys.F6) btnDelete.PerformClick();
             if (e.KeyCode == Keys.F10) btnClose.PerformClick();
-            //数字のみ入力可能にする
-            if (!char.IsControl((char)e.KeyCode) && !char.IsDigit((char)e.KeyCode))
-            {
-                e.SuppressKeyPress = true; // 入力を無効にする
-            }
         }
 
         private void dgvCategory_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
@@ -436,6 +436,15 @@ namespace EquipFormApp
         private void frmMaster_Activated(object sender, EventArgs e)
         {
             txtCateCode.Focus();
+        }
+
+        private void txtCateCode_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // 3. 数字と制御文字（BackSpace等）以外は弾く
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
