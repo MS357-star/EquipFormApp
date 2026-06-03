@@ -66,6 +66,7 @@ namespace EquipFormApp
             cmbAdjuUnder.Name = "cmbAdjuUnder";
             cmbAdjuUnder.Size = new Size(151, 28);
             cmbAdjuUnder.TabIndex = 2;
+            cmbAdjuUnder.SelectedIndexChanged += cmbAdjuUnder_SelectedIndexChanged;
             // 
             // btnEnter
             // 
