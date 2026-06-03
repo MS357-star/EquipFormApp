@@ -1,5 +1,9 @@
 using Microsoft.Data.SqlClient;
+using System;
 using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace EquipFormApp
 {
@@ -17,79 +21,80 @@ namespace EquipFormApp
         private void frmMain_Load(object sender, EventArgs e)
         {
             LoadCategoryCombo();
-
             LoadEquipmentData();
         }
 
         private void SetGridDesign()
         {
             if (dgvEquipCate.Columns.Count == 0) return;
+            dgvEquipCate.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            dgvEquipCate.RowTemplate.Height = 42; 
+            dgvEquipCate.DefaultCellStyle.DataSourceNullValue = null;
+            dgvEquipCate.ShowCellToolTips = true;
+
             dgvEquipCate.EnableHeadersVisualStyles = false;
+            dgvEquipCate.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            dgvEquipCate.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
             dgvEquipCate.ColumnHeadersDefaultCellStyle.BackColor = Color.LightSkyBlue;
             dgvEquipCate.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvEquipCate.RowHeadersDefaultCellStyle.BackColor = Color.LightSkyBlue;
-            dgvEquipCate.RowHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgvEquipCate.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
 
-
-            dgvEquipCate.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
+            // 各列の幅（比率）の調整
             if (dgvEquipCate.Columns.Contains("備品ID"))
             {
-                dgvEquipCate.Columns["備品ID"].FillWeight = 70;       // かなり狭め
-                dgvEquipCate.Columns["備品名"].FillWeight = 150;      // 広く
-                dgvEquipCate.Columns["カテゴリ名"].FillWeight = 90;   // やや狭め
-                dgvEquipCate.Columns["在庫数"].FillWeight = 70;       // かなり狭め
-                dgvEquipCate.Columns["保管場所"].FillWeight = 100;    // 標準
-                dgvEquipCate.Columns["備考"].FillWeight = 150;        // 広く
-                dgvEquipCate.Columns["最終更新日時"].FillWeight = 100; // 日付が入るピッタリサイズ
+                dgvEquipCate.Columns["備品ID"].FillWeight = 70;
+                dgvEquipCate.Columns["備品名"].FillWeight = 150;
+                dgvEquipCate.Columns["カテゴリ名"].FillWeight = 90;
+                dgvEquipCate.Columns["在庫数"].FillWeight = 70;
+                dgvEquipCate.Columns["保管場所"].FillWeight = 100;
+                dgvEquipCate.Columns["備考"].FillWeight = 150;
+                dgvEquipCate.Columns["最終更新日時"].FillWeight = 120;
             }
 
-            if (dgvEquipCate.Columns.Contains("備品ID"))
+            string[] leftCols = { "備品名", "カテゴリ名", "保管場所", "備考" };
+            foreach (string colName in leftCols)
             {
-                dgvEquipCate.Columns["備品ID"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                if (dgvEquipCate.Columns.Contains(colName))
+                {
+                    dgvEquipCate.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                }
             }
+
+            //中央揃えにする列
+            string[] centerCols = { "備品ID", "最終更新日時" };
+            foreach (string colName in centerCols)
+            {
+                if (dgvEquipCate.Columns.Contains(colName))
+                {
+                    dgvEquipCate.Columns[colName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                }
+            }
+
+            //右揃えにする列（在庫数）
             if (dgvEquipCate.Columns.Contains("在庫数"))
             {
                 dgvEquipCate.Columns["在庫数"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgvEquipCate.Columns["在庫数"].DefaultCellStyle.Format = "#,##0";
             }
-
-            //最終更新日のフォーマット中央に寄せる
             if (dgvEquipCate.Columns.Contains("最終更新日時"))
             {
-                dgvEquipCate.Columns["最終更新日時"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgvEquipCate.Columns["最終更新日時"].DefaultCellStyle.Format = "yyyy/MM/dd HH:mm:ss";
             }
 
+            dgvEquipCate.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
             foreach (DataGridViewColumn col in dgvEquipCate.Columns)
             {
-                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                col.HeaderText = col.HeaderText.Trim();
+                col.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            }
 
-                string originalName = col.HeaderText.TrimStart();
 
-                // 列ごとにスペースの量を調整
-                switch (originalName)
-                {
-                    case "備品ID":
-                        col.HeaderText = "      " + originalName;
-                        break;
-                    case "備品名":
-                    case "在庫数":
-                    case "備考":
-                        col.HeaderText = "     " + originalName;
-                        break;
-                    case "カテゴリ名":
-                    case "保管場所":
-                        col.HeaderText = "   " + originalName;
-                        break;
-                    case "最終更新日時":
-                        col.HeaderText = "   " + originalName;
-                        break;
-                    default:
-                        col.HeaderText = "    " + originalName;
-                        break;
-                }
+            dgvEquipCate.ColumnHeadersDefaultCellStyle.Padding = new Padding(18, 0, 0, 0);
+            foreach (DataGridViewRow row in dgvEquipCate.Rows)
+            {
+                row.Height = 42;
             }
         }
 
@@ -111,7 +116,6 @@ namespace EquipFormApp
                     M_Category c ON e.CategoryCode = c.CategoryCode
                 WHERE 1 = 1";
 
-            // DBに接続してデータを取得
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
@@ -119,19 +123,17 @@ namespace EquipFormApp
                     using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                     {
                         DataTable dt = new DataTable();
-
                         adapter.Fill(dt);
 
                         dgvEquipCate.DataSource = dt;
-
                         SetGridDesign();
                     }
                 }
             }
         }
+
         private void LoadCategoryCombo()
         {
-            // カテゴリコードとカテゴリ名を取得するSQL（コード順に並び替え）
             string sql = "SELECT CategoryCode, CategoryName FROM M_Category ORDER BY CategoryCode";
 
             try
@@ -142,7 +144,6 @@ namespace EquipFormApp
                     {
                         using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                         {
-                            // データを格納する箱を用意
                             DataTable dt = new DataTable();
                             adapter.Fill(dt);
 
@@ -152,13 +153,9 @@ namespace EquipFormApp
                             dt.Rows.InsertAt(row, 0);
 
                             cmbCategory.DataSource = dt;
-
                             cmbCategory.DisplayMember = "CategoryName";
-
                             cmbCategory.ValueMember = "CategoryCode";
-
                             cmbCategory.SelectedIndex = 0;
-
                             cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
                         }
                     }
@@ -170,12 +167,9 @@ namespace EquipFormApp
             }
         }
 
-
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
             string selectedCategory = cmbCategory.SelectedValue?.ToString();
-
             string searchName = txtEquip.Text.Trim();
 
             string sql = @"
@@ -224,31 +218,32 @@ namespace EquipFormApp
                             DataTable dt = new DataTable();
                             adapter.Fill(dt);
 
-
                             dgvEquipCate.DataSource = dt;
                             SetGridDesign();
+
                             if (dt.Rows.Count == 0)
                             {
                                 MessageBox.Show("該当するものはありませんでした。", "検索結果", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                                // 1. テキストボックスの文字だけをリセットする
-                                txtEquip.Clear();
-
-                                // 2. テキストボックスが空の状態で、もう一度この検索処理を実行する！
-                                // （これによって、コンボボックスの条件だけで自動的に再検索されます）
-                                btnSearch.PerformClick();
-
-                                // 3. 次に入力しやすいようにテキストボックスにカーソルを当てる
-                                txtEquip.Focus();
+                                if (!string.IsNullOrEmpty(searchName))
+                                {
+                                    txtEquip.Clear();
+                                    btnSearch.PerformClick();
+                                    txtEquip.Focus();
+                                }
+                                else
+                                {
+                                    LoadEquipmentData();
+                                    txtEquip.Focus();
+                                }
                             }
                         }
+                        }
                     }
-                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"検索中にエラーが発生しました。\nエラー内容: {ex.Message}",
-                                "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"検索中にエラーが発生しました。\nエラー内容: {ex.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -291,8 +286,7 @@ namespace EquipFormApp
         {
             if (dgvEquipCate.CurrentRow == null)
             {
-                MessageBox.Show("在庫調整する備品を選択してください。", "エラー",
-                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("在庫調整する備品を選択してください。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -314,14 +308,13 @@ namespace EquipFormApp
         {
             using (frmMaster masterForm = new frmMaster())
             {
-
                 masterForm.ShowDialog();
             }
-
 
             LoadCategoryCombo();
             LoadEquipmentData();
         }
+
         private void dgvList_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
         {
             string strRowNumber = (e.RowIndex + 1).ToString();
@@ -346,41 +339,49 @@ namespace EquipFormApp
 
         private void frmMain_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F1)
-            {
-                btnInsert.PerformClick();
-            }
-
-            if (e.KeyCode == Keys.F3)
-            {
-                btnEdit.PerformClick();
-            }
-
-            if (e.KeyCode == Keys.F5)
-            {
-                btnAdju.PerformClick();
-            }
-
-            if (e.KeyCode == Keys.F7)
-            {
-                btnMaster.PerformClick();
-            }
-
-            if (e.KeyCode == Keys.F9)
-            {
-                btnSearch.PerformClick();
-            }
+            if (e.KeyCode == Keys.F1) btnInsert.PerformClick();
+            if (e.KeyCode == Keys.F3) btnEdit.PerformClick();
+            if (e.KeyCode == Keys.F5) btnAdju.PerformClick();
+            if (e.KeyCode == Keys.F7) btnMaster.PerformClick();
+            if (e.KeyCode == Keys.F9) btnSearch.PerformClick();
         }
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.F10)
             {
-                // trueを返すことで「このキー操作はこちらで処理したから、OS側は何もしなくていいよ」と伝えます
                 return true;
             }
-
-            // F10以外のキーは、通常通りの処理をそのまま行います
             return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        private void dgvEquipCate_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.Value == null) return;
+
+            string[] targetColumns = { "備品名", "カテゴリ名", "保管場所", "備考" };
+
+            if (dgvEquipCate.Columns[e.ColumnIndex] == null) return;
+            string columnName = dgvEquipCate.Columns[e.ColumnIndex].Name;
+            if (!targetColumns.Contains(columnName)) return;
+
+            e.Paint(e.ClipBounds, DataGridViewPaintParts.All & ~DataGridViewPaintParts.ContentForeground);
+
+            StringFormat sf = new StringFormat(StringFormatFlags.LineLimit);
+            sf.Alignment = StringAlignment.Near;          
+            sf.LineAlignment = StringAlignment.Center;    
+            sf.Trimming = StringTrimming.EllipsisCharacter; 
+            Brush brush = (e.State & DataGridViewElementStates.Selected) == DataGridViewElementStates.Selected
+                ? new SolidBrush(e.CellStyle.SelectionForeColor)
+                : new SolidBrush(e.CellStyle.ForeColor);
+
+            RectangleF textRect = new RectangleF(e.CellBounds.X + 3, e.CellBounds.Y, e.CellBounds.Width - 6, e.CellBounds.Height);
+
+            e.Graphics.DrawString(e.Value.ToString(), e.CellStyle.Font, brush, textRect, sf);
+
+            brush.Dispose();
+            sf.Dispose();
+            e.Handled = true;
         }
     }
 }
