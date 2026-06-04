@@ -51,7 +51,7 @@ namespace EquipFormApp
         {
             string esc(string v) => v?.Replace("'", "''") ?? "";
 
-            string sql = $"SELECT CategoryCode, CategoryName FROM M_Category WHERE CategoryName = '{esc(tb.Text)}'";
+            string sql = $"SELECT CategoryCode, CategoryName FROM M_Category WHERE CategoryName = '{esc(tb.Text.Trim())}'";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -64,7 +64,7 @@ namespace EquipFormApp
                     {
                         if (reader.Read())
                         {
-                            MessageBox.Show($"指定したカテゴリ名は既に''カテゴリコード：{reader["CategoryCode"].ToString()}''へ登録されています。");
+                            MessageBox.Show($"指定したカテゴリ名は既にカテゴリコード：''{reader["CategoryCode"].ToString()}''へ登録されています。");
                         }
                     }
                     return result != null;   // 何か返ってきたら重複
@@ -262,7 +262,7 @@ namespace EquipFormApp
             DialogResult result = MessageBox.Show("登録してよろしいですか？", "確認", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (result != DialogResult.OK) return;
 
-            string sql = $@"INSERT INTO M_Category (CategoryCode, CategoryName) VALUES ('{esc(txtCateCode.Text)}', '{esc(txtCateName.Text)}')";
+            string sql = $@"INSERT INTO M_Category (CategoryCode, CategoryName) VALUES ('{esc(txtCateCode.Text)}', N'{esc(txtCateName.Text)}')";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -307,7 +307,7 @@ namespace EquipFormApp
             if (dgvCategory.CurrentRow == null) return;
             string code = dgvCategory.CurrentRow.Cells[0].Value.ToString();
 
-            string sql = $"UPDATE M_Category SET CategoryName = '{esc(txtCateName.Text)}' WHERE CategoryCode = '{esc(code)}'";
+            string sql = $"UPDATE M_Category SET CategoryName = N'{esc(txtCateName.Text)}' WHERE CategoryCode = '{esc(code)}'";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -377,7 +377,12 @@ namespace EquipFormApp
             if (e.KeyCode == Keys.F1) btnInsert.PerformClick();
             if (e.KeyCode == Keys.F3) btnUpdate.PerformClick();
             if (e.KeyCode == Keys.F6) btnDelete.PerformClick();
-            if (e.KeyCode == Keys.F10) btnClose.PerformClick();
+            if (e.KeyCode == Keys.F10)
+            {
+                btnClose.PerformClick();
+                SendKeys.Send("");
+                e.Handled = true;
+            }
         }
 
         private void dgvCategory_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
@@ -421,7 +426,12 @@ namespace EquipFormApp
             if (e.KeyCode == Keys.F1) btnInsert.PerformClick();
             if (e.KeyCode == Keys.F3) btnUpdate.PerformClick();
             if (e.KeyCode == Keys.F6) btnDelete.PerformClick();
-            if (e.KeyCode == Keys.F10) btnClose.PerformClick();
+            if (e.KeyCode == Keys.F10)
+            {
+                btnClose.PerformClick();
+                SendKeys.Send("");
+                e.Handled = true;
+            }
         }
 
         private void frmMaster_Activated(object sender, EventArgs e)
