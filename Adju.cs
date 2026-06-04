@@ -81,7 +81,7 @@ namespace EquipFormApp
                 txtAdjuSum.Focus();
                 return; // ここで処理を中断して画面に戻す
             }
-            
+
             // 入力された数字を「絶対値（プラス）」にする
             int absAdjustNum = Math.Abs(adjustNum);
 
@@ -266,7 +266,7 @@ namespace EquipFormApp
             if (e.KeyCode == Keys.F10)
             {
                 btnClose.PerformClick();
-                SendKeys.Send("Tab");
+                SendKeys.Send("");
                 e.Handled = true;
             }
         }
