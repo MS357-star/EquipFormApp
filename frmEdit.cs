@@ -1,5 +1,6 @@
 using Microsoft.Data.SqlClient;
 using System;
+using System.ComponentModel;
 using System.Data;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -303,6 +304,25 @@ namespace EquipFormApp
 
         private void txtEquipId_KeyPress(object sender, KeyPressEventArgs e)
         {
+            MaskedTextBox tb = (MaskedTextBox)sender;
+
+            // バックスペースはそのまま
+            if (e.KeyChar == '\b') return;
+
+            // 全角 → 半角
+            string half = Microsoft.VisualBasic.Strings.StrConv(e.KeyChar.ToString(),
+                Microsoft.VisualBasic.VbStrConv.Narrow, 0);
+
+            // 半角数字以外は無視
+            if (!char.IsDigit(half, 0))
+            {
+                e.Handled = true;
+                return;
+            }
+
+            // MaskedTextBox に半角数字を入力させる
+            e.KeyChar = half[0];
+
             if (e.KeyChar >= '０' && e.KeyChar <= '９')
             {
                 e.Handled = true;
@@ -369,6 +389,30 @@ namespace EquipFormApp
         private void frmEdit_Activated(object sender, EventArgs e)
         {
             cmbCategory.Focus();
+        }
+
+        private void txtEquipId_TextChanged(object sender, EventArgs e)
+        {
+            MaskedTextBox tb = (MaskedTextBox)sender;
+
+            // カーソル位置を保存
+            int sel = tb.SelectionStart;
+
+            // 全角 → 半角
+            string half = Microsoft.VisualBasic.Strings.StrConv(tb.Text, Microsoft.VisualBasic.VbStrConv.Narrow, 0);
+
+            // MaskedTextProvider を使って Mask に沿って再構築
+            MaskedTextProvider provider = new MaskedTextProvider(tb.Mask);
+            provider.Set(half);
+
+            // 再構築した文字列をセット
+            tb.Text = provider.ToDisplayString();
+
+            // カーソル位置を復元（はみ出し防止）
+            if (sel <= tb.Text.Length)
+                tb.SelectionStart = sel;
+            else
+                tb.SelectionStart = tb.Text.Length;
         }
     }
 }
