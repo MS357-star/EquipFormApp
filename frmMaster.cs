@@ -271,27 +271,29 @@ namespace EquipFormApp
                     command.ExecuteNonQuery();
                 }
             }
-            MessageBox.Show("追加しました。");
+            MessageBox.Show("追加しました。", "お知らせ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            txtCateCode.Clear();
+            txtCateName.Clear();
             frmMaster_Load(null, null);
         }
 
         // 更新処理
         private void btnUpdate_Click(object sender, EventArgs e)
         {
+            TextBox tbCode = txtCateCode;
 
-
-            if (IsInvalid(txtCateCode, "カテゴリコード")) return;
+            if (IsInvalid(tbCode, "カテゴリコード")) return;
             if (IsInvalid(txtCateName, "カテゴリ名")) return;
 
             // 3桁チェック
-            if (!IsThreeDigit(txtCateCode.Text))
+            if (!IsThreeDigit(tbCode.Text))
             {
                 MessageBox.Show("コードは3桁の数字で入力してください。");
                 return;
             }
 
             // ★ ここで存在チェック
-            if (!IsDuplicateCode(txtCateCode))
+            if (!IsDuplicateCode(tbCode))
             {
                 MessageBox.Show("このカテゴリコードは登録されていません。");
                 return;
@@ -305,9 +307,8 @@ namespace EquipFormApp
             if (result != DialogResult.OK) return;
 
             if (dgvCategory.CurrentRow == null) return;
-            string code = dgvCategory.CurrentRow.Cells[0].Value.ToString();
 
-            string sql = $"UPDATE M_Category SET CategoryName = N'{esc(txtCateName.Text)}' WHERE CategoryCode = '{esc(code)}'";
+            string sql = $"UPDATE M_Category SET CategoryName = N'{esc(txtCateName.Text)}' WHERE CategoryCode = '{esc(tbCode.Text)}'";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -317,7 +318,9 @@ namespace EquipFormApp
                     command.ExecuteNonQuery();
                 }
             }
-            MessageBox.Show("更新しました。");
+            MessageBox.Show("更新しました。", "お知らせ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            txtCateCode.Clear();
+            txtCateName.Clear();
             frmMaster_Load(null, null);
         }
 
@@ -353,7 +356,9 @@ namespace EquipFormApp
                         command.ExecuteNonQuery();
                     }
                 }
-                MessageBox.Show("削除しました。");
+                MessageBox.Show("削除しました。", "お知らせ", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtCateCode.Clear();
+                txtCateName.Clear();
                 frmMaster_Load(null, null);
             }
         }
