@@ -283,6 +283,7 @@ namespace EquipFormApp
 
         private void txtEquipId_Enter(object sender, EventArgs e)
         {
+            txtEquipId.PromptChar = ' ';
             // 非同期（BeginInvoke）を使って、フォーカス移動が完全に終わった後にカーソル位置を動かす
             this.BeginInvoke(new Action(() =>
             {
