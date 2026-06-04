@@ -10,7 +10,6 @@ namespace EquipFormApp
     public partial class frmMain : Form
     {
         private readonly string connectionString = "Data Source=192.168.3.19;Initial Catalog=Times26;User ID=JouhouGiken;Password=System26;TrustServerCertificate=True";
-        private int rightClickedRowIndex = -1;
 
         public frmMain()
         {
@@ -28,7 +27,7 @@ namespace EquipFormApp
         {
             if (dgvEquipCate.Columns.Count == 0) return;
             dgvEquipCate.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-            dgvEquipCate.RowTemplate.Height = 42; 
+            dgvEquipCate.RowTemplate.Height = 42;
             dgvEquipCate.DefaultCellStyle.DataSourceNullValue = null;
             dgvEquipCate.ShowCellToolTips = true;
 
@@ -167,7 +166,7 @@ namespace EquipFormApp
             }
         }
 
-        private void btnSearch_Click(object sender, EventArgs e)
+        private void LoadSelectCategory()
         {
             string selectedCategory = cmbCategory.SelectedValue?.ToString();
             string searchName = txtEquip.Text.Trim();
@@ -233,18 +232,24 @@ namespace EquipFormApp
                                 }
                                 else
                                 {
+                                    cmbCategory.SelectedIndex = 0;
                                     LoadEquipmentData();
                                     txtEquip.Focus();
                                 }
                             }
                         }
-                        }
                     }
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"検索中にエラーが発生しました。\nエラー内容: {ex.Message}", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            LoadSelectCategory();
         }
 
         //登録ボタン
@@ -254,7 +259,7 @@ namespace EquipFormApp
             {
                 form.ShowDialog();
             }
-            LoadEquipmentData();
+            LoadSelectCategory();
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -279,7 +284,7 @@ namespace EquipFormApp
                 editForm.ShowDialog();
             }
 
-            LoadEquipmentData();
+            LoadSelectCategory();
         }
 
         private void btnAdju_Click(object sender, EventArgs e)
@@ -301,7 +306,7 @@ namespace EquipFormApp
                 adjuForm.ShowDialog();
             }
 
-            LoadEquipmentData();
+            LoadSelectCategory();
         }
 
         private void btnMaster_Click(object sender, EventArgs e)
@@ -312,7 +317,7 @@ namespace EquipFormApp
             }
 
             LoadCategoryCombo();
-            LoadEquipmentData();
+            LoadSelectCategory();
         }
 
         private void dgvList_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
@@ -360,28 +365,44 @@ namespace EquipFormApp
             if (e.RowIndex < 0 || e.ColumnIndex < 0 || e.Value == null) return;
 
             string[] targetColumns = { "備品名", "カテゴリ名", "保管場所", "備考" };
-
-            if (dgvEquipCate.Columns[e.ColumnIndex] == null) return;
-            string columnName = dgvEquipCate.Columns[e.ColumnIndex].Name;
-            if (!targetColumns.Contains(columnName)) return;
+            if (!targetColumns.Contains(dgvEquipCate.Columns[e.ColumnIndex].Name)) return;
 
             e.Paint(e.ClipBounds, DataGridViewPaintParts.All & ~DataGridViewPaintParts.ContentForeground);
 
-            StringFormat sf = new StringFormat(StringFormatFlags.LineLimit);
-            sf.Alignment = StringAlignment.Near;          
-            sf.LineAlignment = StringAlignment.Center;    
-            sf.Trimming = StringTrimming.EllipsisCharacter; 
-            Brush brush = (e.State & DataGridViewElementStates.Selected) == DataGridViewElementStates.Selected
-                ? new SolidBrush(e.CellStyle.SelectionForeColor)
-                : new SolidBrush(e.CellStyle.ForeColor);
+            Rectangle textRect = new Rectangle(
+                e.CellBounds.X + 3,
+                e.CellBounds.Y,
+                e.CellBounds.Width - 6,
+                e.CellBounds.Height
+            );
 
-            RectangleF textRect = new RectangleF(e.CellBounds.X + 3, e.CellBounds.Y, e.CellBounds.Width - 6, e.CellBounds.Height);
+            Color foreColor = ((e.State & DataGridViewElementStates.Selected) != 0)
+                ? e.CellStyle.SelectionForeColor
+                : e.CellStyle.ForeColor;
 
-            e.Graphics.DrawString(e.Value.ToString(), e.CellStyle.Font, brush, textRect, sf);
+            TextFormatFlags flags =
+                TextFormatFlags.Left |
+                TextFormatFlags.VerticalCenter |
+                TextFormatFlags.EndEllipsis |
+                TextFormatFlags.PreserveGraphicsClipping |
+                TextFormatFlags.TextBoxControl |
+                TextFormatFlags.WordBreak; // ← 改行を有効にする
 
-            brush.Dispose();
-            sf.Dispose();
+            TextRenderer.DrawText(
+                e.Graphics,
+                e.Value.ToString(),
+                e.CellStyle.Font,
+                textRect,
+                foreColor,
+                flags
+            );
+
             e.Handled = true;
+        }
+
+        private void dgvEquipCate_Enter(object sender, EventArgs e)
+        {
+            this.ActiveControl = null;
         }
     }
 }
